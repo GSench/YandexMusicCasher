@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/imageView"
+        android:background="@drawable/promo" />
+
+    <Button
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="@string/free"
+        android:id="@+id/pomise_button"
+        android:background="@drawable/yellow_button"
+        android:textColor="#000"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="@string/forever"
+        android:id="@+id/donate_button"
+        android:background="@drawable/ad_button"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            android:id="@+id/update_button"
+            android:layout_weight="1"
+            android:onClick="onUpdateButton"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_button"
+            android:text="@string/info"
+            android:onClick="onInfoButton"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>
