@@ -1,7 +1,9 @@
 package ru.yandexmusiccasher;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -52,7 +54,7 @@ public class Tools {
         } else ToastService.show(context.getString(R.string.no_music_app), context);
     }
 
-    public static InputStream download(String urlStr, CookieManager msCookieManager) throws IOException {
+    public static InputStream download(String urlStr, CookieManager msCookieManager, String[]... extHeaders) throws IOException {
         InputStream inputStream = null;
         HttpURLConnection urlConnection = null;
         URL url = new URL(urlStr);
@@ -64,6 +66,7 @@ public class Tools {
 
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("http.useragent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
+        for(int i=0; i<extHeaders.length; i++) urlConnection.setRequestProperty(extHeaders[i][0], extHeaders[i][1]);
         urlConnection.connect();
         inputStream = urlConnection.getInputStream();
 
@@ -85,6 +88,10 @@ public class Tools {
         } finally {
             inputStream.close();
         }
+    }
+
+    public static boolean writeExternalPermGranted(Context context) {
+        return (context.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
 }

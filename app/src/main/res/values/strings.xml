@@ -17,6 +17,10 @@
     <string name="updating">Загрузка обновлений</string>
     <string name="update_title">Обновление Yandex Music Casher</string>
     <string name="update_error">Ошибка обновления</string>
+    <string name="get_permission_msg">Необходимо разрешить приложению сохранять музыку!</string>
+    <string name="permission_denied">Без этого разрешения мы не сможем сохранять музыку!</string>
+    <string name="ok">OK</string>
+    <string name="Cancel">Закрыть</string>
 
     <string name="guide">Гайд</string>
     <string name="OK">ОК</string>

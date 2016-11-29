@@ -70,8 +70,8 @@ public class YandexDownloadService extends IntentService {
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {
-        String trackInfoUrl = "https://music.yandex.ru/api/v2.0/handlers/track/"+trackId+"/download/m?hq=1";
-        String trackInfo = Tools.toString(Tools.download(trackInfoUrl, msCookieManager));
+        String trackInfoUrl = "https://music.yandex.ru/api/v2.1/handlers/track/"+trackId+"/track/download/m?hq=1";
+        String trackInfo = Tools.toString(Tools.download(trackInfoUrl, msCookieManager, new String[]{"X-Retpath-Y", "https://music.yandex.ru/"}));
         if(yandexCheck(trackInfo)){
             throw new YandexCaptchaException();
         }
@@ -79,7 +79,7 @@ public class YandexDownloadService extends IntentService {
         JSONObject jObject = new JSONObject(trackInfo);
         String src = jObject.getString("src");
 
-        String downloadInfo = Tools.toString(Tools.download(src + "&format=json", msCookieManager));
+        String downloadInfo = Tools.toString(Tools.download(src + "&format=json", msCookieManager, new String[]{"X-Retpath-Y", "https://music.yandex.ru/"}));
         if(yandexCheck(downloadInfo)){
             throw new YandexCaptchaException();
         }
