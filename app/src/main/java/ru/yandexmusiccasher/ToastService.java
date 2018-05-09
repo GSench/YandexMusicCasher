@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -18,11 +17,9 @@ public class ToastService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        Log.d("TOAST_SERVICE", "MyService onCreate");
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("TOAST_SERVICE", "MyService command");
         Toast.makeText(this, intent.getStringExtra(MESSAGE), intent.getIntExtra(DURATION, Toast.LENGTH_LONG)==Toast.LENGTH_LONG ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
         stopSelf();
         return START_REDELIVER_INTENT;
