@@ -43,7 +43,14 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
     }
 
     @Override
-    public void isLinkReceived(String url, UrlReceiverPresenter presenter) {
+    public void downloadTrackByUrl(String url, UrlReceiverPresenter presenter) {
+
+        String path = system.getSavedString(PATH, null);
+        if(path==null){
+            presenter.onUndefinedPath();
+            return;
+        }
+
         String id = url.substring(url.lastIndexOf("/") + 1);
         String album = url.substring(url.indexOf("album/") + "album/".length());
         album = album.substring(0, album.indexOf("/"));
@@ -64,12 +71,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             presenter.onParseError();
             return;
         }
-        String path = system.getSavedString(PATH, null);
-        if(path==null){
-            presenter.onUndefinedPath();
-            return;
-        }
-        system.downloadFile(trackUrl, path, trackTitle+".mp3", httpParams);
+        doDownload(trackUrl, path, trackTitle+".mp3", httpParams);
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {
@@ -128,5 +130,9 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
                 httpParams.setHeaders(headers);
                 break;
             }
+    }
+
+    private void doDownload(String trackUrl, String path, String title, HttpParams httpParams){
+        system.downloadFile(trackUrl, path, path, httpParams);
     }
 }

@@ -8,5 +8,5 @@ import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
 
 public interface UrlReceivedUseCase {
 
-    public void isLinkReceived(String link, UrlReceiverPresenter presenter);
+    public void downloadTrackByUrl(String link, UrlReceiverPresenter presenter);
 }
