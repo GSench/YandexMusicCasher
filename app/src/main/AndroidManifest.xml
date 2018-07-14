@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity"
+        <activity android:name=".presentation.view.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReceiveActivity"
+        <activity android:name=".presentation.view.activity.ReceiveActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -28,12 +28,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".YandexVerifyActivity"
+        <activity android:name=".presentation.view.activity.YandexVerifyActivity"
             android:screenOrientation="portrait"/>
-        <service android:name=".YandexDownloadService"/>
-        <service android:name=".ToastService"/>
+        <service android:name=".presentation.view.service.YandexDownloadService"/>
+        <service android:name=".presentation.utils.ToastService"/>
         <receiver
-            android:name=".DownloadCompleteReceiver"
+            android:name=".presentation.view.service.DownloadCompleteReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />

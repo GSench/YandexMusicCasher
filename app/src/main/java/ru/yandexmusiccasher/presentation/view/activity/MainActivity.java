@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher;
+package ru.yandexmusiccasher.presentation.view.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
+import ru.yandexmusiccasher.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAndRequestPermissions(){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M&&!Tools.writeExternalPermGranted(this)){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M&&!writeExternalPermGranted()){
             new AlertDialog.Builder(this)
                     .setMessage(R.string.get_permission_msg)
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -60,37 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void onUpdateButton(View v){
-        checkForUpdates();
-    }
-
-    private void checkForUpdates(){
-        final AppUpdating appUpdating = new AppUpdating(this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int currentVersion = getResources().getInteger(R.integer.version);
-                int updateVersion = appUpdating.getUpdateVersion();
-                if(currentVersion<updateVersion){
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            appUpdating.update();
-                            finish();
-                        }
-                    });
-                } else {
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, getString(R.string.no_updates), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -105,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private boolean writeExternalPermGranted() {
+        return (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
     }
 
 }

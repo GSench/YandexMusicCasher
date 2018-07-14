@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher;
+package ru.yandexmusiccasher.presentation.utils;
 
 import android.app.Service;
 import android.content.Context;

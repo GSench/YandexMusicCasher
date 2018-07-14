@@ -15,7 +15,6 @@ import ru.yandexmusiccasher.domain.utils.function;
 public interface SystemInterface {
 
     public void doOnBackground(function<Void> background);
-    public void doOnForeground(function<Void> function);
     public Pair<byte[], HttpParams> httpGet(URL url, HttpParams params) throws IOException;
     public String[] getSavedStringArray(String title, String[] def);
     public void saveStringArray(String title, String[] array);
@@ -26,5 +25,5 @@ public interface SystemInterface {
     public void saveInt(String title, int i);*/
     public void removeSaved(String str);
     public String md5(String s);
-    public void downloadFile(String url, String path, String filename, HttpParams httpParams);
+    public long startDownloadingFile(String url, String path, String filename, HttpParams httpParams);
 }

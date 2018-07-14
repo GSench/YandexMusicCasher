@@ -25,9 +25,11 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
 
     private SystemInterface system;
     private HttpParams httpParams;
+    private String cashPath;
 
-    public UrlReceivedInteractor(SystemInterface system){
+    public UrlReceivedInteractor(SystemInterface system, String cashPath){
         this.system=system;
+        this.cashPath=cashPath;
         initHttpParams();
 
     }
@@ -71,7 +73,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             presenter.onParseError();
             return;
         }
-        doDownload(trackUrl, path, trackTitle+".mp3", httpParams);
+        long downloadId = system.startDownloadingFile(trackUrl, cashPath, trackTitle+".mp3", httpParams);
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {
@@ -132,7 +134,4 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             }
     }
 
-    private void doDownload(String trackUrl, String path, String title, HttpParams httpParams){
-        system.downloadFile(trackUrl, path, path, httpParams);
-    }
 }

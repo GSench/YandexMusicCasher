@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher;
+package ru.yandexmusiccasher.presentation.view.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -10,6 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.Tools;
+import ru.yandexmusiccasher.presentation.view.service.YandexDownloadService;
 
 /**
  * Created by GSench on 02.06.2016.

@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher;
+package ru.yandexmusiccasher.presentation.view.service;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -14,6 +14,12 @@ import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+
+import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.Tools;
+import ru.yandexmusiccasher.presentation.utils.IntentService;
+import ru.yandexmusiccasher.presentation.utils.ToastService;
+import ru.yandexmusiccasher.presentation.view.activity.YandexVerifyActivity;
 
 /**
  * Created by GSench on 01.06.2016.

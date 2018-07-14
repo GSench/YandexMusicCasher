@@ -1,16 +1,23 @@
 package ru.yandexmusiccasher.presentation;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,10 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.domain.utils.function;
+import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 
 /**
@@ -31,7 +40,7 @@ import ru.yandexmusiccasher.domain.utils.function;
 
 public class AndroidInterface implements SystemInterface {
 
-    private Activity act;
+    private Context act;
     public static final String SPREF = "preferences";
 
     public AndroidInterface(Activity act){
@@ -50,17 +59,6 @@ public class AndroidInterface implements SystemInterface {
     }
 
     @Override
-    public void doOnForeground(final function<Void> function) {
-        if(act !=null)
-            act.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    function.run();
-                }
-            });
-    }
-
-    @Override
     public Pair<byte[], HttpParams> httpGet(URL url, HttpParams params) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         if(params!=null){
@@ -68,6 +66,7 @@ public class AndroidInterface implements SystemInterface {
                 urlConnection.setRequestProperty(header.f, header.s);
             }
         }
+        urlConnection.setRequestMethod("GET");
         try {
             //Opening input stream
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -128,7 +127,6 @@ public class AndroidInterface implements SystemInterface {
         return ret;
     }
 
-    /**
     @Override
     public String getSavedString(String title, String def) {
         return act.getSharedPreferences(SPREF, Context.MODE_PRIVATE).getString(title, def);
@@ -142,6 +140,7 @@ public class AndroidInterface implements SystemInterface {
                 .commit();
     }
 
+    /**
     @Override
     public int getSavedInt(String title, int def) {
         return act.getSharedPreferences(SPREF, Context.MODE_PRIVATE).getInt(title, def);
@@ -161,6 +160,51 @@ public class AndroidInterface implements SystemInterface {
                 .edit()
                 .remove(str)
                 .commit();
+    }
+
+    @Override
+    public String md5(String s) {
+        MessageDigest messageDigest = null;
+        byte[] digest = new byte[0];
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            messageDigest.update(s.getBytes());
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        BigInteger bigInt = new BigInteger(1, digest);
+        String md5Hex = bigInt.toString(16);
+        while( md5Hex.length() < 32 ){
+            md5Hex = "0" + md5Hex;
+        }
+        return md5Hex;
+    }
+
+    @Override
+    public long startDownloadingFile(String url, String path, String filename, HttpParams httpParams) {
+        Uri source = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(source);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+        request.setAllowedOverRoaming(false);
+        request.setTitle(filename.substring(0, filename.lastIndexOf(".")));
+        //request.setDescription("");
+        File dir = new File(path);
+        dir.mkdirs();
+        File file = new File(dir, filename);
+        request.setDestinationUri(Uri.fromFile(file));
+        DownloadManager manager = (DownloadManager) act.getSystemService(Context.DOWNLOAD_SERVICE);
+        return manager.enqueue(request);
+    }
+
+    public static void playMusic(String uri, Context context){
+        Intent player = new Intent(Intent.ACTION_VIEW);
+        player.setDataAndType(Uri.parse(uri), "audio/mp3");
+        player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (player.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(player);
+        } else ToastService.show(context.getString(R.string.no_music_app), context);
     }
 
 }

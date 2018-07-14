@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher;
+package ru.yandexmusiccasher.presentation.view.service;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
+
+import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.Tools;
+import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 /**
  * Created by GSench on 02.06.2016.

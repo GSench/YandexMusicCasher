@@ -5,6 +5,7 @@ package ru.yandexmusiccasher.presentation.presenter;
  */
 
 public class UrlReceiverPresenter {
+
     public void onYandexCaptcha() {
 
     }
