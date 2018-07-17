@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.text.TextUtils;
 
 import ru.yandexmusiccasher.R;
-import ru.yandexmusiccasher.Tools;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 /**
@@ -61,6 +60,6 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                 .edit()
                 .putString(url, path)
                 .apply();
-        Tools.playMusic(path, context);
+        //Tools.playMusic(path, context);
     }
 }

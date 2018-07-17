@@ -4,21 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
-
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.InputStream;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 import ru.yandexmusiccasher.R;
-import ru.yandexmusiccasher.Tools;
 import ru.yandexmusiccasher.presentation.view.service.YandexDownloadService;
 
 /**
@@ -32,6 +19,7 @@ public class YandexVerifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yandex_verify);
+        /**
         uri = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
 
@@ -62,7 +50,7 @@ public class YandexVerifyActivity extends AppCompatActivity {
             }
         });
         webView.loadUrl(uri);
-        Toast.makeText(this, getString(R.string.yandex_verify), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.yandex_verify), Toast.LENGTH_LONG).show();*/
     }
 
     public void onEnterClick(View v){

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.UriPermission;
 import android.net.Uri;
 
 import org.apache.commons.io.IOUtils;
@@ -196,6 +197,18 @@ public class AndroidInterface implements SystemInterface {
         request.setDestinationUri(Uri.fromFile(file));
         DownloadManager manager = (DownloadManager) act.getSystemService(Context.DOWNLOAD_SERVICE);
         return manager.enqueue(request);
+    }
+
+    @Override
+    public boolean checkUPathIsAvailable(String uPath) {
+        if(!uPath.startsWith("content://com.android.externalstorage.documents/tree/")) return false;
+        List<UriPermission> uriPermissions = act.getContentResolver().getPersistedUriPermissions();
+        for(UriPermission permission: uriPermissions){
+            if(permission.getUri().toString().equals(uPath)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void playMusic(String uri, Context context){

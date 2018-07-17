@@ -30,28 +30,12 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_gravity="center_horizontal"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:layout_marginTop="@dimen/activity_vertical_margin">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/update"
-            android:id="@+id/update_button"
-            android:layout_weight="1"
-            android:onClick="onUpdateButton"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/info_button"
-            android:text="@string/info"
-            android:onClick="onInfoButton"
-            android:layout_weight="1" />
-    </LinearLayout>
+        android:id="@+id/info_button"
+        android:text="@string/info"
+        android:onClick="onInfoButton"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
 </LinearLayout>

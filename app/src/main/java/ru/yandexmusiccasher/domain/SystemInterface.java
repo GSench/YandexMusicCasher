@@ -26,4 +26,6 @@ public interface SystemInterface {
     public void removeSaved(String str);
     public String md5(String s);
     public long startDownloadingFile(String url, String path, String filename, HttpParams httpParams);
+
+    public boolean checkUPathIsAvailable(String uPath);
 }
