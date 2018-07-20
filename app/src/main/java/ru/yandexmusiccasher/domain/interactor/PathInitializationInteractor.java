@@ -10,7 +10,7 @@ import ru.yandexmusiccasher.presentation.presenter.PathInitPresenter;
 
 public class PathInitializationInteractor implements PathInitializationUseCase {
 
-    private static final String PATH = "music_dir";
+    public static final String PATH = "music_dir";
     private SystemInterface system;
     private PathInitPresenter presenter;
 

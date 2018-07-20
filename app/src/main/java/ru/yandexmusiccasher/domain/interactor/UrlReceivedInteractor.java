@@ -5,8 +5,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
+import ru.yandexmusiccasher.domain.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.YandexCaptchaException;
 import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
@@ -21,27 +21,13 @@ import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
 public class UrlReceivedInteractor implements UrlReceivedUseCase {
 
     private static final String PATH = "path";
-    private static final String COOKIES = "cookies";
 
     private SystemInterface system;
-    private HttpParams httpParams;
-    private String cashPath;
+    private HttpHeadersManager httpHeadersManager;
 
-    public UrlReceivedInteractor(SystemInterface system, String cashPath){
+    public UrlReceivedInteractor(SystemInterface system){
         this.system=system;
-        this.cashPath=cashPath;
-        initHttpParams();
-
-    }
-
-    private void initHttpParams(){
-        String cookie = system.getSavedString(COOKIES, "");
-        ArrayList<Pair<String, String>> headers = new ArrayList<>();
-        headers.add(new Pair<String, String>("X-Retpath-Y", "https://music.yandex.ru/"));
-        headers.add(new Pair<String, String>("Cookie", cookie));
-        headers.add(new Pair<String, String>("http.useragent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1"));
-        httpParams = new HttpParams();
-        httpParams.setHeaders(headers);
+        httpHeadersManager = new HttpHeadersManager(system);
     }
 
     @Override
@@ -62,7 +48,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             trackTitle = getTrack(id, album);
             trackUrl = getTrackUrl(id);
         } catch (YandexCaptchaException e) {
-            presenter.onYandexCaptcha();
+            presenter.onYandexCaptcha(httpHeadersManager.getHttpParams());
             return;
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +59,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             presenter.onParseError();
             return;
         }
-        long downloadId = system.startDownloadingFile(trackUrl, cashPath, trackTitle+".mp3", httpParams);
+        //long downloadId = system.startDownloadingFile(trackUrl, cashPath, trackTitle+".mp3", httpParams);
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {
@@ -108,30 +94,13 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
     }
 
     private String yRequest(String url) throws YandexCaptchaException, IOException {
-        Pair<byte[], HttpParams> response = system.httpGet(new URL(url), httpParams);
-        updateHttpParams(response.s);
+        Pair<byte[], HttpParams> response = system.httpGet(new URL(url), httpHeadersManager.getHttpParams());
+        httpHeadersManager.updateHttpParams(response.s);
         String txt = new String(response.f, "UTF-8");
         if(yandexCheck(txt)){
             throw new YandexCaptchaException();
         }
         return txt;
-    }
-
-    private void updateHttpParams(HttpParams received){
-        for(Pair<String, String> param: received.getHeaders())
-            if(param.f.equals("Set-Cookie")){ //finds "Set-Cookie" header from received ones
-                ArrayList<Pair<String, String>> headers = httpParams.getHeaders();
-                int i;
-                for(i=0; i<headers.size(); i++)
-                    if(headers.get(i).f.equals("Cookie")) { //finds "Cookie" header from old ones
-                        headers.add(i, new Pair<String, String>("Cookie",
-                                headers.get(i).s + (headers.get(i).s.equals("") ? "" : "; ") + param.s)); //adds new cookies to old ones
-                        break;
-                    }
-                system.saveString(COOKIES, headers.get(i).s);
-                httpParams.setHeaders(headers);
-                break;
-            }
     }
 
 }

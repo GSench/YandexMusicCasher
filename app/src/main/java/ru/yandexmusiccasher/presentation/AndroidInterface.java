@@ -1,6 +1,5 @@
 package ru.yandexmusiccasher.presentation;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +43,7 @@ public class AndroidInterface implements SystemInterface {
     private Context act;
     public static final String SPREF = "preferences";
 
-    public AndroidInterface(Activity act){
+    public AndroidInterface(Context act){
         this.act = act;
     }
 
