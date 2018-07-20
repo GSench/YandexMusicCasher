@@ -5,9 +5,22 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.provider.DocumentFile;
 import android.text.TextUtils;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.domain.SystemInterface;
+import ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor;
+import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 /**
@@ -15,8 +28,12 @@ import ru.yandexmusiccasher.presentation.utils.ToastService;
  */
 public class DownloadCompleteReceiver extends BroadcastReceiver {
 
+    private SystemInterface system;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        system = new AndroidInterface(context);
 
         String path = null, url = null;
         String action = intent.getAction();
@@ -30,10 +47,6 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                 Cursor c = downloadManager.query(query);
                 if (c.moveToFirst()) {
                     int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-
-                    //checking for update action
-                    if(c.getString(c.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION)).equals(context.getString(R.string.updating))) return;
-
                     if (DownloadManager.STATUS_SUCCESSFUL != c.getInt(columnIndex)) {
                         ToastService.show(context.getString(R.string.download_error), context);
                         return;
@@ -55,11 +68,29 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
             ToastService.show(context.getString(R.string.play_music_error), context);
             return;
         }
-        context
-                .getSharedPreferences(YandexDownloadService.MUSIC_CASH, Context.MODE_PRIVATE)
-                .edit()
-                .putString(url, path)
-                .apply();
-        //Tools.playMusic(path, context);
+        replaceMusicFile(path, context);
+    }
+
+    private void replaceMusicFile(String uri, Context context){
+        String musicDir = system.getSavedString(PathInitializationInteractor.PATH, null);
+        Uri downloadedFile = Uri.parse(uri);
+        if(musicDir==null) return; //TODO
+        DocumentFile musicDocDir = DocumentFile.fromTreeUri(context, Uri.parse(musicDir));
+        DocumentFile musicFile = musicDocDir.createFile("audio/mp3", downloadedFile.getLastPathSegment());
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = context.getContentResolver().openInputStream(downloadedFile);
+            out = context.getContentResolver().openOutputStream(musicFile.getUri());
+            IOUtils.copy(in, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return; //TODO
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+        File initialMusicFile = new File(Environment.getExternalStoragePublicDirectory(En), downloadedFile.getLastPathSegment());
+        initialMusicFile.delete();
     }
 }
