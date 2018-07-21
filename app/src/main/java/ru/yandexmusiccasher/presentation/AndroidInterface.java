@@ -1,10 +1,14 @@
 package ru.yandexmusiccasher.presentation;
 
 import android.app.DownloadManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.UriPermission;
 import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.provider.DocumentFile;
+import android.webkit.MimeTypeMap;
 
 import org.apache.commons.io.IOUtils;
 
@@ -13,6 +17,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -208,6 +213,32 @@ public class AndroidInterface implements SystemInterface {
             }
         }
         return false;
+    }
+
+    @Override
+    public void copyFile(String file, String toDir) throws IOException {
+        Uri fileUri = Uri.parse(file);
+        ContentResolver cR = act.getContentResolver();
+        DocumentFile docDir = DocumentFile.fromTreeUri(act, Uri.parse(toDir));
+        DocumentFile newFile = docDir.createFile(cR.getType(fileUri), fileUri.getLastPathSegment());
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = cR.openInputStream(fileUri);
+            out = cR.openOutputStream(newFile.getUri());
+            IOUtils.copy(in, out);
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    @Override
+    public void deleteMusicFileFromExtStorageDirByUri(String uri) throws Exception {
+        File dir = act.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+        String filename = Uri.parse(uri).getLastPathSegment();
+        File file = new File(dir, filename);
+        if(!file.delete()) throw new Exception();
     }
 
     public static void playMusic(String uri, Context context){

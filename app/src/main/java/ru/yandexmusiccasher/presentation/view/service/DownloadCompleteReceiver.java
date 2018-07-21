@@ -68,29 +68,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
             ToastService.show(context.getString(R.string.play_music_error), context);
             return;
         }
-        replaceMusicFile(path, context);
+        //replaceMusicFile(path, context);
     }
 
-    private void replaceMusicFile(String uri, Context context){
-        String musicDir = system.getSavedString(PathInitializationInteractor.PATH, null);
-        Uri downloadedFile = Uri.parse(uri);
-        if(musicDir==null) return; //TODO
-        DocumentFile musicDocDir = DocumentFile.fromTreeUri(context, Uri.parse(musicDir));
-        DocumentFile musicFile = musicDocDir.createFile("audio/mp3", downloadedFile.getLastPathSegment());
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = context.getContentResolver().openInputStream(downloadedFile);
-            out = context.getContentResolver().openOutputStream(musicFile.getUri());
-            IOUtils.copy(in, out);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return; //TODO
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
-        File initialMusicFile = new File(Environment.getExternalStoragePublicDirectory(En), downloadedFile.getLastPathSegment());
-        initialMusicFile.delete();
-    }
 }
