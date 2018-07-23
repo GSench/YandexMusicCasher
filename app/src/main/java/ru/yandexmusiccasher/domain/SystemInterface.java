@@ -25,8 +25,9 @@ public interface SystemInterface {
     public void saveInt(String title, int i);*/
     public void removeSaved(String str);
     public String md5(String s);
-    public long startDownloadingFile(String url, String path, String filename, HttpParams httpParams);
+    public void startDownloadingFile(String url, String path, String filename);
     public boolean checkUPathIsAvailable(String uPath);
     public void copyFile(String file, String toDir) throws IOException;
     public void deleteMusicFileFromExtStorageDirByUri(String uri) throws Exception;
+    public String getCashPath();
 }

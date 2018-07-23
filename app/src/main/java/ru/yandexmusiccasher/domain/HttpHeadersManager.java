@@ -38,7 +38,7 @@ public class HttpHeadersManager {
 
     public void updateHttpParams(HttpParams received){
         for(Pair<String, String> param: received.getHeaders())
-            if(param.f.equals("Set-Cookie")){ //finds "Set-Cookie" header from received ones
+            if("set-cookie".equals(param.f)){ //finds "Set-Cookie" header from received ones
                 ArrayList<Pair<String, String>> headers = httpParams.getHeaders();
                 int i;
                 for(i=0; i<headers.size(); i++)

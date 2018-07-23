@@ -14,13 +14,13 @@ import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
 
+import static ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor.PATH;
+
 /**
  * Created by grish on 08.07.2018.
  */
 
 public class UrlReceivedInteractor implements UrlReceivedUseCase {
-
-    private static final String PATH = "path";
 
     private SystemInterface system;
     private HttpHeadersManager httpHeadersManager;
@@ -43,7 +43,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
         String album = url.substring(url.indexOf("album/") + "album/".length());
         album = album.substring(0, album.indexOf("/"));
 
-        String trackUrl = null, trackTitle = null;
+        String trackUrl, trackTitle;
         try {
             trackTitle = getTrack(id, album);
             trackUrl = getTrackUrl(id);
@@ -59,7 +59,12 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             presenter.onParseError();
             return;
         }
-        //long downloadId = system.startDownloadingFile(trackUrl, cashPath, trackTitle+".mp3", httpParams);
+
+        String cashPath = system.getCashPath();
+        String filename = trackTitle+(url.substring(url.indexOf("/album"))).replaceAll("/", "")+".mp3";
+        System.out.println("Cash path is: "+cashPath);
+        System.out.println("filename is: "+filename);
+        system.startDownloadingFile(trackUrl, cashPath, filename);
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {

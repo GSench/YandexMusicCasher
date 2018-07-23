@@ -8,7 +8,6 @@ import android.content.UriPermission;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.provider.DocumentFile;
-import android.webkit.MimeTypeMap;
 
 import org.apache.commons.io.IOUtils;
 
@@ -188,19 +187,18 @@ public class AndroidInterface implements SystemInterface {
     }
 
     @Override
-    public long startDownloadingFile(String url, String path, String filename, HttpParams httpParams) {
+    public void startDownloadingFile(String url, String path, String filename) {
         Uri source = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(source);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(false);
         request.setTitle(filename.substring(0, filename.lastIndexOf(".")));
-        //request.setDescription("");
         File dir = new File(path);
         dir.mkdirs();
         File file = new File(dir, filename);
         request.setDestinationUri(Uri.fromFile(file));
         DownloadManager manager = (DownloadManager) act.getSystemService(Context.DOWNLOAD_SERVICE);
-        return manager.enqueue(request);
+        manager.enqueue(request);
     }
 
     @Override
@@ -239,6 +237,11 @@ public class AndroidInterface implements SystemInterface {
         String filename = Uri.parse(uri).getLastPathSegment();
         File file = new File(dir, filename);
         if(!file.delete()) throw new Exception();
+    }
+
+    @Override
+    public String getCashPath() {
+        return act.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
     }
 
     public static void playMusic(String uri, Context context){

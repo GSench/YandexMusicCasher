@@ -32,4 +32,6 @@
     <string name="choose_path">Выберите папку для сохранения музыки</string>
     <string name="internet_error">Ошибка интернет соединения</string>
     <string name="indef_path">Путь сохранения не определен</string>
+    <string name="copying_error">Ошибка копирования музыки в заданный путь</string>
+    <string name="cash_error">Ошибка удаления кеша музыки</string>
 </resources>

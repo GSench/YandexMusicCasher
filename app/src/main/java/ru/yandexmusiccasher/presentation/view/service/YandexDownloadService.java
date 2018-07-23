@@ -24,11 +24,14 @@ public class YandexDownloadService extends IntentService implements DownloadServ
 
     public YandexDownloadService() {
         super(null);
-        presenter = new UrlReceiverPresenter(new AndroidInterface(this));
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if(presenter==null){
+            presenter = new UrlReceiverPresenter(new AndroidInterface(this));
+            presenter.setView(this);
+        }
         baseUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
         presenter.urlReceived(baseUrl);
     }
