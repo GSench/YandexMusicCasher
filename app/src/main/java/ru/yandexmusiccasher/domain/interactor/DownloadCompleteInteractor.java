@@ -19,13 +19,15 @@ public class DownloadCompleteInteractor implements DownloadCompleteUseCase {
     @Override
     public void fileDownloaded(String uri, DownloadCompletePresenter presenter) {
         String musicDir = system.getSavedString(PathInitializationInteractor.PATH, null);
+        String musicUri = null;
         try{
-            system.copyFile(uri, musicDir);
+            musicUri = system.copyFile(uri, musicDir);
         } catch (Exception e){
             e.printStackTrace();
             presenter.copyingError();
             return;
         }
+        presenter.playMusic(musicUri);
         try {
             system.deleteMusicFileFromExtStorageDirByUri(uri);
         } catch (Exception e){

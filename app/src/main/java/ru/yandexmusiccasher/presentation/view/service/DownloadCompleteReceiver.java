@@ -66,4 +66,9 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
     public void unableToDeleteCashFile() {
         ToastService.show(context.getString(R.string.cash_error), context);
     }
+
+    @Override
+    public void playMusic(String musicUri) {
+        AndroidInterface.playMusic(musicUri, context);
+    }
 }

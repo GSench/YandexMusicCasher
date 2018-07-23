@@ -12,4 +12,5 @@ public interface DownloadServiceView {
     public void showInternetError();
     public void showParseError();
     public void showIndefinitePathError();
+    public void playMusic(String music);
 }

@@ -16,8 +16,6 @@ import ru.yandexmusiccasher.presentation.view.activity.YandexVerifyActivity;
  */
 public class YandexDownloadService extends IntentService implements DownloadServiceView {
 
-    public static final String MUSIC_CASH = "music_cash";
-
     String baseUrl;
 
     private UrlReceiverPresenter presenter;
@@ -56,5 +54,10 @@ public class YandexDownloadService extends IntentService implements DownloadServ
     @Override
     public void showIndefinitePathError() {
         ToastService.show(getString(R.string.indef_path), this);
+    }
+
+    @Override
+    public void playMusic(String music) {
+        AndroidInterface.playMusic(music, this);
     }
 }

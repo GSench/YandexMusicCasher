@@ -43,4 +43,7 @@ public class UrlReceiverPresenter {
         view.showIndefinitePathError();
     }
 
+    public void playMusic(String music) {
+        view.playMusic(music);
+    }
 }

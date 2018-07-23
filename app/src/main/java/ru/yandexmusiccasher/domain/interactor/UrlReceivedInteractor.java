@@ -39,6 +39,15 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             return;
         }
 
+        String trackID = (url.substring(url.indexOf("/album"))).replaceAll("/", "")+".mp3";
+
+        String music = system.isMusicDownloaded(trackID, path);
+        if(music!=null){
+            presenter.playMusic(music);
+            return;
+        }
+
+
         String id = url.substring(url.lastIndexOf("/") + 1);
         String album = url.substring(url.indexOf("album/") + "album/".length());
         album = album.substring(0, album.indexOf("/"));
@@ -61,7 +70,7 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
         }
 
         String cashPath = system.getCashPath();
-        String filename = trackTitle+(url.substring(url.indexOf("/album"))).replaceAll("/", "")+".mp3";
+        String filename = trackTitle+trackID;
         System.out.println("Cash path is: "+cashPath);
         System.out.println("filename is: "+filename);
         system.startDownloadingFile(trackUrl, cashPath, filename);

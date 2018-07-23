@@ -35,4 +35,8 @@ public class DownloadCompletePresenter {
         if(uri==null) view.downloadError();
         else useCase.fileDownloaded(uri, this);
     }
+
+    public void playMusic(String musicUri) {
+        view.playMusic(musicUri);
+    }
 }

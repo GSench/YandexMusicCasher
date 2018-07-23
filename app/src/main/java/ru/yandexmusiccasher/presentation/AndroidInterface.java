@@ -5,8 +5,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.UriPermission;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.provider.DocumentFile;
 
 import org.apache.commons.io.IOUtils;
@@ -14,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -214,7 +217,7 @@ public class AndroidInterface implements SystemInterface {
     }
 
     @Override
-    public void copyFile(String file, String toDir) throws IOException {
+    public String copyFile(String file, String toDir) throws IOException {
         Uri fileUri = Uri.parse(file);
         ContentResolver cR = act.getContentResolver();
         DocumentFile docDir = DocumentFile.fromTreeUri(act, Uri.parse(toDir));
@@ -229,6 +232,7 @@ public class AndroidInterface implements SystemInterface {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
         }
+        return newFile.getUri().toString();
     }
 
     @Override
@@ -244,7 +248,16 @@ public class AndroidInterface implements SystemInterface {
         return act.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
     }
 
+    @Override
+    public String isMusicDownloaded(String trackID, String path) {
+        DocumentFile docDir = DocumentFile.fromTreeUri(act, Uri.parse(path));
+        for (DocumentFile file: docDir.listFiles())
+            if(file.getName().endsWith(trackID)) return file.getUri().toString();
+        return null;
+    }
+
     public static void playMusic(String uri, Context context){
+        System.out.println("Music uri: "+uri);
         Intent player = new Intent(Intent.ACTION_VIEW);
         player.setDataAndType(Uri.parse(uri), "audio/mp3");
         player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
