@@ -5,10 +5,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.UriPermission;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.support.v4.provider.DocumentFile;
 
 import org.apache.commons.io.IOUtils;
@@ -16,7 +14,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.BufferedInputStream;
 import java.io.EOFException;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,6 +35,7 @@ import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.domain.utils.function;
+import ru.yandexmusiccasher.presentation.utils.FileUtil;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 
@@ -258,8 +256,13 @@ public class AndroidInterface implements SystemInterface {
 
     public static void playMusic(String uri, Context context){
         System.out.println("Music uri: "+uri);
+        Uri docUri = Uri.parse(uri);
+        String filePath = FileUtil.getFullPathFromDocumentUri(docUri, context);
+        if(filePath==null) return;
+        File file = new File(filePath);
+        System.out.println("Music path: "+filePath);
         Intent player = new Intent(Intent.ACTION_VIEW);
-        player.setDataAndType(Uri.parse(uri), "audio/mp3");
+        player.setDataAndType(Uri.fromFile(file), "audio/mp3");
         player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (player.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(player);
