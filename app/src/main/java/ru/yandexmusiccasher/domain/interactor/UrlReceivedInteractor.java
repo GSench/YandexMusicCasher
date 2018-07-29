@@ -6,9 +6,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 
-import ru.yandexmusiccasher.domain.HttpHeadersManager;
+import ru.yandexmusiccasher.domain.yamusic_model.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.SystemInterface;
-import ru.yandexmusiccasher.domain.YandexCaptchaException;
+import ru.yandexmusiccasher.domain.yamusic_model.YandexCaptchaException;
 import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
@@ -103,17 +103,11 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
         return artist+" - "+title+" "+version;
     }
 
-    private boolean yandexCheck(String response){
-        return response.contains("https://music.yandex.ru/captcha/");
-    }
-
     private String yRequest(String url) throws YandexCaptchaException, IOException {
         Pair<byte[], HttpParams> response = system.httpGet(new URL(url), httpHeadersManager.getHttpParams());
         httpHeadersManager.updateHttpParams(response.s);
         String txt = new String(response.f, "UTF-8");
-        if(yandexCheck(txt)){
-            throw new YandexCaptchaException();
-        }
+        YandexCaptchaException.yandexCheck(txt);
         return txt;
     }
 
