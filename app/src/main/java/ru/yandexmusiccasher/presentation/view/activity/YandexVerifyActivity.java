@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 
 import ru.yandexmusiccasher.R;
-import ru.yandexmusiccasher.domain.yamusic_model.HttpHeadersManager;
+import ru.yandexmusiccasher.domain.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.presentation.AndroidInterface;

@@ -25,4 +25,11 @@ public interface SystemInterface {
     public void saveInt(String title, int i);*/
     public void removeSaved(String str);
     public String md5(String s);
+    public void startDownloadingFile(String url, String path, String filename);
+    public boolean checkUPathIsAvailable(String uPath);
+    public String copyFile(String file, String toDir) throws IOException;
+    public void deleteMusicFileFromExtStorageDirByUri(String uri) throws Exception;
+    public String getCashPath();
+
+    public String isMusicDownloaded(String url, String path);
 }

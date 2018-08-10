@@ -1,8 +1,7 @@
-package ru.yandexmusiccasher.domain.yamusic_model;
+package ru.yandexmusiccasher.domain;
 
 import java.util.ArrayList;
 
-import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 
