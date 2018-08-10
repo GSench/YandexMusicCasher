@@ -32,6 +32,9 @@
 
 ![guide_five_mini.png](https://github.com/GSench/YandexMusicCasher/blob/master/app/src/main/res/drawable-nodpi/guide_five_mini.png)
 
+### Благодарности
+Алгоритм получения информации о треке и ссылки на скачивание mp3 был взят из браузерного расширения [Yandex Music Fisher](https://github.com/stepkagr/yandex-music-fisher) ( The MIT License (MIT) Copyright Artyom Egorov mail@egoroof.ru )
+
 ### Лицензия
 ```
 Copyright YandexMusicCasher GSench
