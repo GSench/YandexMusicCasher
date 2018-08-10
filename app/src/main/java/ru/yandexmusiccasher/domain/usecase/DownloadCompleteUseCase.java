@@ -1,5 +1,6 @@
 package ru.yandexmusiccasher.domain.usecase;
 
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
 
 /**
@@ -7,5 +8,5 @@ import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
  */
 
 public interface DownloadCompleteUseCase {
-    public void fileDownloaded(String uri, DownloadCompletePresenter presenter);
+    public void fileDownloaded(MusicFileCash fileCash, DownloadCompletePresenter presenter);
 }

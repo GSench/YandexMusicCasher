@@ -2,6 +2,7 @@ package ru.yandexmusiccasher.presentation.presenter;
 
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
@@ -15,8 +16,8 @@ public class UrlReceiverPresenter {
     private UrlReceivedUseCase useCase;
     private DownloadServiceView view;
 
-    public UrlReceiverPresenter(SystemInterface system){
-        useCase = new UrlReceivedInteractor(system);
+    public UrlReceiverPresenter(SystemInterface system, MusicStorageOperations operations){
+        useCase = new UrlReceivedInteractor(system, operations);
     }
 
     public void setView(DownloadServiceView view){

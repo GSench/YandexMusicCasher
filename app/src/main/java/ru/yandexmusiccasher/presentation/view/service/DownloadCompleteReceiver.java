@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.database.Cursor;
 
 import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
+import ru.yandexmusiccasher.presentation.model.AMSOperations;
+import ru.yandexmusiccasher.presentation.model.AMusicCash;
 import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
@@ -28,13 +31,13 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
         this.context=context;
         this.intent=intent;
 
-        presenter = new DownloadCompletePresenter(new AndroidInterface(context));
+        presenter = new DownloadCompletePresenter(new AMSOperations(context));
         presenter.setView(this);
         presenter.start();
     }
 
     @Override
-    public String getDownloadedFileUri(){
+    public MusicFileCash getDownloadedFile(){
         String path = null;
         long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -49,7 +52,8 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
                 path = c.getString(uriIndex);
             }
         }
-        return path;
+        String id = path.substring(path.lastIndexOf("album"), path.lastIndexOf("."));
+        return new AMusicCash(context).findById(id);
     }
 
     @Override

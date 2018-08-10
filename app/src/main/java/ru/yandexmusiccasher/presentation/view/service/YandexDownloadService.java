@@ -5,6 +5,7 @@ import android.content.Intent;
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
+import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
 import ru.yandexmusiccasher.presentation.utils.IntentService;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
@@ -27,7 +28,7 @@ public class YandexDownloadService extends IntentService implements DownloadServ
     @Override
     protected void onHandleIntent(Intent intent) {
         if(presenter==null){
-            presenter = new UrlReceiverPresenter(new AndroidInterface(this));
+            presenter = new UrlReceiverPresenter(new AndroidInterface(this), new AMSOperations(this));
             presenter.setView(this);
         }
         baseUrl = intent.getStringExtra(Intent.EXTRA_TEXT);

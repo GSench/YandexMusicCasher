@@ -3,18 +3,20 @@ package ru.yandexmusiccasher.domain.interactor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
 import ru.yandexmusiccasher.domain.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.YandexCaptchaException;
+import ru.yandexmusiccasher.domain.model.MusicFile;
+import ru.yandexmusiccasher.domain.model.MusicStorage;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
-
-import static ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor.PATH;
 
 /**
  * Created by grish on 08.07.2018.
@@ -23,27 +25,31 @@ import static ru.yandexmusiccasher.domain.interactor.PathInitializationInteracto
 public class UrlReceivedInteractor implements UrlReceivedUseCase {
 
     private SystemInterface system;
+    private MusicStorageOperations sOperations;
     private HttpHeadersManager httpHeadersManager;
 
-    public UrlReceivedInteractor(SystemInterface system){
+    public UrlReceivedInteractor(SystemInterface system, MusicStorageOperations sOperations){
         this.system=system;
+        this.sOperations=sOperations;
         httpHeadersManager = new HttpHeadersManager(system);
     }
 
     @Override
     public void downloadTrackByUrl(String url, UrlReceiverPresenter presenter) {
 
-        String path = system.getSavedString(PATH, null);
-        if(path==null){
+        MusicStorage storage;
+        try {
+            storage = sOperations.getMusicStorage();
+        } catch (FileNotFoundException e) {
             presenter.onUndefinedPath();
             return;
         }
 
-        String trackID = (url.substring(url.indexOf("/album"))).replaceAll("/", "")+".mp3";
+        String trackID = (url.substring(url.indexOf("/album"))).replaceAll("/", "");
 
-        String music = system.isMusicDownloaded(trackID, path);
-        if(music!=null){
-            presenter.playMusic(music);
+        MusicFile musicFile = storage.findById(trackID);
+        if(musicFile!=null){
+            musicFile.play();
             return;
         }
 
@@ -69,11 +75,8 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
             return;
         }
 
-        String cashPath = system.getCashPath();
         String filename = trackTitle+trackID;
-        System.out.println("Cash path is: "+cashPath);
-        System.out.println("filename is: "+filename);
-        system.startDownloadingFile(trackUrl, cashPath, filename);
+        sOperations.getMusicCash().download(trackUrl, filename);
     }
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {

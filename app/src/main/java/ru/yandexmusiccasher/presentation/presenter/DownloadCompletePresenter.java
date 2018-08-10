@@ -1,7 +1,8 @@
 package ru.yandexmusiccasher.presentation.presenter;
 
-import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.DownloadCompleteUseCase;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
 
@@ -14,8 +15,8 @@ public class DownloadCompletePresenter {
     private DownloadCompleteUseCase useCase;
     private DownloadCompleteView view;
 
-    public DownloadCompletePresenter(SystemInterface system){
-        useCase = new DownloadCompleteInteractor(system);
+    public DownloadCompletePresenter(MusicStorageOperations operations){
+        useCase = new DownloadCompleteInteractor(operations);
     }
 
     public void copyingError() {
@@ -31,12 +32,9 @@ public class DownloadCompletePresenter {
     }
 
     public void start() {
-        String uri = view.getDownloadedFileUri();
-        if(uri==null) view.downloadError();
-        else useCase.fileDownloaded(uri, this);
+        MusicFileCash fileCash = view.getDownloadedFile();
+        if(fileCash==null) view.downloadError();
+        else useCase.fileDownloaded(fileCash, this);
     }
 
-    public void playMusic(String musicUri) {
-        view.playMusic(musicUri);
-    }
 }

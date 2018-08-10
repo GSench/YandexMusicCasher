@@ -1,7 +1,8 @@
 package ru.yandexmusiccasher.presentation.presenter;
 
-import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor;
+import ru.yandexmusiccasher.domain.model.MusicStorage;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.PathInitializationUseCase;
 import ru.yandexmusiccasher.presentation.view.PathInitView;
 
@@ -14,8 +15,8 @@ public class PathInitPresenter {
     private PathInitializationUseCase useCase;
     private PathInitView view;
 
-    public PathInitPresenter(SystemInterface system){
-        this.useCase=new PathInitializationInteractor(system, this);
+    public PathInitPresenter(MusicStorageOperations operations){
+        this.useCase=new PathInitializationInteractor(operations, this);
     }
 
     public void setView(PathInitView view){
@@ -23,11 +24,11 @@ public class PathInitPresenter {
     }
 
     public void start(){
-        useCase.checkAndInitPath();
+        useCase.startInit();
     }
 
-    public void onPathReceived(String path){
-        useCase.onPathPicked(path);
+    public void onPathReceived(MusicStorage path){
+        useCase.onStoragePicked(path);
     }
 
     public void onPathFailToReceive(){

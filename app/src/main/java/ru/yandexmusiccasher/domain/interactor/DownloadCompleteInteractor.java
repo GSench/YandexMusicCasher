@@ -1,6 +1,8 @@
 package ru.yandexmusiccasher.domain.interactor;
 
-import ru.yandexmusiccasher.domain.SystemInterface;
+import ru.yandexmusiccasher.domain.model.MusicFile;
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.DownloadCompleteUseCase;
 import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
 
@@ -10,26 +12,25 @@ import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
 
 public class DownloadCompleteInteractor implements DownloadCompleteUseCase {
 
-    private SystemInterface system;
+    private MusicStorageOperations operations;
 
-    public DownloadCompleteInteractor(SystemInterface system){
-        this.system=system;
+    public DownloadCompleteInteractor(MusicStorageOperations operations){
+        this.operations=operations;
     }
 
     @Override
-    public void fileDownloaded(String uri, DownloadCompletePresenter presenter) {
-        String musicDir = system.getSavedString(PathInitializationInteractor.PATH, null);
-        String musicUri = null;
+    public void fileDownloaded(MusicFileCash fileCash, DownloadCompletePresenter presenter) {
+        MusicFile music = null;
         try{
-            musicUri = system.copyFile(uri, musicDir);
+            music = fileCash.copyTo(operations.getMusicStorage());
         } catch (Exception e){
             e.printStackTrace();
             presenter.copyingError();
             return;
         }
-        presenter.playMusic(musicUri);
+        music.play();
         try {
-            system.deleteMusicFileFromExtStorageDirByUri(uri);
+            fileCash.delete();
         } catch (Exception e){
             e.printStackTrace();
             presenter.unableToDeleteCashFile();

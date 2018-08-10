@@ -1,6 +1,9 @@
 package ru.yandexmusiccasher.domain.interactor;
 
-import ru.yandexmusiccasher.domain.SystemInterface;
+import java.io.FileNotFoundException;
+
+import ru.yandexmusiccasher.domain.model.MusicStorage;
+import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.usecase.PathInitializationUseCase;
 import ru.yandexmusiccasher.presentation.presenter.PathInitPresenter;
 
@@ -10,25 +13,28 @@ import ru.yandexmusiccasher.presentation.presenter.PathInitPresenter;
 
 public class PathInitializationInteractor implements PathInitializationUseCase {
 
-    public static final String PATH = "music_dir";
-    private SystemInterface system;
+    private MusicStorageOperations operations;
     private PathInitPresenter presenter;
 
-    public PathInitializationInteractor(SystemInterface system, PathInitPresenter presenter){
-        this.system=system;
+    public PathInitializationInteractor(MusicStorageOperations operations, PathInitPresenter presenter){
+        this.operations=operations;
         this.presenter=presenter;
     }
 
     @Override
-    public void checkAndInitPath() {
-        String savedPath = system.getSavedString(PATH, null);
-        if(savedPath!=null&&system.checkUPathIsAvailable(savedPath)) presenter.pathInitialized();
-        else presenter.pickPath();
+    public void startInit() {
+        try {
+            operations.getMusicStorage();
+        } catch (FileNotFoundException e) {
+            presenter.pickPath();
+            return;
+        }
+        presenter.pathInitialized();
     }
 
     @Override
-    public void onPathPicked(String path) {
-        system.saveString(PATH, path);
+    public void onStoragePicked(MusicStorage storage) {
+        operations.saveMusicStorage(storage);
         presenter.pathInitialized();
     }
 }
