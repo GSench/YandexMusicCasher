@@ -28,12 +28,12 @@
 
 ![guide_four_mini.png](https://github.com/GSench/YandexMusicCasher/blob/master/app/src/main/res/drawable-nodpi/guide_four_mini.png)
 
-6) Возможно, ~~к вам постучатся люди в штатском~~ Яндекс попросит вас ввести капчу. Вводим, нажимаем кнопку Отправить в окне (НЕ кнопку ПРОДОЛЖИТЬ), потом, когда появится многабукав, жмем Продолжить.
+6) Возможно, ~~к вам постучатся люди в форме~~ Яндекс попросит вас ввести капчу. Вводим, нажимаем кнопку Отправить в окне (НЕ кнопку ПРОДОЛЖИТЬ), потом, когда появится многабукав, жмем Продолжить.
 
 ![guide_five_mini.png](https://github.com/GSench/YandexMusicCasher/blob/master/app/src/main/res/drawable-nodpi/guide_five_mini.png)
 
-### Лицензия ###
-
+### Лицензия
+```
 Copyright YandexMusicCasher GSench
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,3 +47,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
