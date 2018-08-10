@@ -4,14 +4,13 @@ import java.io.FileNotFoundException;
 
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.PathInitializationUseCase;
-import ru.yandexmusiccasher.presentation.presenter.PathInitPresenter;
+import ru.yandexmusiccasher.domain.presenters.PathInitPresenter;
 
 /**
  * Created by grish on 17.07.2018.
  */
 
-public class PathInitializationInteractor implements PathInitializationUseCase {
+public class PathInitializationInteractor {
 
     private MusicStorageOperations operations;
     private PathInitPresenter presenter;
@@ -21,7 +20,6 @@ public class PathInitializationInteractor implements PathInitializationUseCase {
         this.presenter=presenter;
     }
 
-    @Override
     public void startInit() {
         try {
             operations.getMusicStorage();
@@ -32,7 +30,6 @@ public class PathInitializationInteractor implements PathInitializationUseCase {
         presenter.pathInitialized();
     }
 
-    @Override
     public void onStoragePicked(MusicStorage storage) {
         operations.saveMusicStorage(storage);
         presenter.pathInitialized();

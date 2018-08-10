@@ -1,22 +1,13 @@
 package ru.yandexmusiccasher.presentation;
 
-import android.app.DownloadManager;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.UriPermission;
-import android.net.Uri;
-import android.os.Environment;
-import android.support.v4.provider.DocumentFile;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -30,13 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.domain.utils.function;
-import ru.yandexmusiccasher.presentation.utils.FileUtil;
-import ru.yandexmusiccasher.presentation.utils.ToastService;
 
 
 /**
@@ -185,88 +173,6 @@ public class AndroidInterface implements SystemInterface {
             md5Hex = "0" + md5Hex;
         }
         return md5Hex;
-    }
-
-    @Override
-    public void startDownloadingFile(String url, String path, String filename) {
-        Uri source = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(source);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setAllowedOverRoaming(false);
-        request.setTitle(filename.substring(0, filename.lastIndexOf(".")));
-        File dir = new File(path);
-        dir.mkdirs();
-        File file = new File(dir, filename);
-        request.setDestinationUri(Uri.fromFile(file));
-        DownloadManager manager = (DownloadManager) act.getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.enqueue(request);
-    }
-
-    @Override
-    public boolean checkUPathIsAvailable(String uPath) {
-        if(!uPath.startsWith("content://com.android.externalstorage.documents/tree/")) return false;
-        List<UriPermission> uriPermissions = act.getContentResolver().getPersistedUriPermissions();
-        for(UriPermission permission: uriPermissions){
-            if(permission.getUri().toString().equals(uPath)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public String copyFile(String file, String toDir) throws IOException {
-        Uri fileUri = Uri.parse(file);
-        ContentResolver cR = act.getContentResolver();
-        DocumentFile docDir = DocumentFile.fromTreeUri(act, Uri.parse(toDir));
-        DocumentFile newFile = docDir.createFile(cR.getType(fileUri), fileUri.getLastPathSegment());
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = cR.openInputStream(fileUri);
-            out = cR.openOutputStream(newFile.getUri());
-            IOUtils.copy(in, out);
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
-        return newFile.getUri().toString();
-    }
-
-    @Override
-    public void deleteMusicFileFromExtStorageDirByUri(String uri) throws Exception {
-        File dir = act.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
-        String filename = Uri.parse(uri).getLastPathSegment();
-        File file = new File(dir, filename);
-        if(!file.delete()) throw new Exception();
-    }
-
-    @Override
-    public String getCashPath() {
-        return act.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
-    }
-
-    @Override
-    public String isMusicDownloaded(String trackID, String path) {
-        DocumentFile docDir = DocumentFile.fromTreeUri(act, Uri.parse(path));
-        for (DocumentFile file: docDir.listFiles())
-            if(file.getName().endsWith(trackID)) return file.getUri().toString();
-        return null;
-    }
-
-    public static void playMusic(String uri, Context context){
-        System.out.println("Music uri: "+uri);
-        Uri docUri = Uri.parse(uri);
-        String filePath = FileUtil.getFullPathFromDocumentUri(docUri, context);
-        if(filePath==null) return;
-        File file = new File(filePath);
-        System.out.println("Music path: "+filePath);
-        Intent player = new Intent(Intent.ACTION_VIEW);
-        player.setDataAndType(Uri.fromFile(file), "audio/mp3");
-        player.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (player.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(player);
-        } else ToastService.show(context.getString(R.string.no_music_app), context);
     }
 
 }

@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicStorage;
-import ru.yandexmusiccasher.presentation.presenter.PathInitPresenter;
+import ru.yandexmusiccasher.presentation.presenter.PathInitPresenterImpl;
 import ru.yandexmusiccasher.presentation.view.PathInitView;
 import ru.yandexmusiccasher.presentation.view.service.YandexDownloadService;
 
@@ -21,12 +21,12 @@ public class ReceiveActivity extends AppCompatActivity implements PathInitView {
 
     private final int PICK_PATH = 1;
 
-    private PathInitPresenter presenter;
+    private PathInitPresenterImpl presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new PathInitPresenter(new AMSOperations(this));
+        presenter = new PathInitPresenterImpl(new AMSOperations(this));
         presenter.setView(this);
         presenter.start();
     }

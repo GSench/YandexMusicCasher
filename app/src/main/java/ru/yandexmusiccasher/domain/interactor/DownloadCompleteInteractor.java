@@ -3,14 +3,13 @@ package ru.yandexmusiccasher.domain.interactor;
 import ru.yandexmusiccasher.domain.model.MusicFile;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.DownloadCompleteUseCase;
-import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
+import ru.yandexmusiccasher.domain.presenters.DownloadCompletePresenter;
 
 /**
  * Created by Григорий Сенченок on 21.07.2018.
  */
 
-public class DownloadCompleteInteractor implements DownloadCompleteUseCase {
+public class DownloadCompleteInteractor {
 
     private MusicStorageOperations operations;
 
@@ -18,7 +17,6 @@ public class DownloadCompleteInteractor implements DownloadCompleteUseCase {
         this.operations=operations;
     }
 
-    @Override
     public void fileDownloaded(MusicFileCash fileCash, DownloadCompletePresenter presenter) {
         MusicFile music = null;
         try{

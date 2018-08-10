@@ -6,7 +6,7 @@ import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
-import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
+import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenterImpl;
 import ru.yandexmusiccasher.presentation.utils.IntentService;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
@@ -19,7 +19,7 @@ public class YandexDownloadService extends IntentService implements DownloadServ
 
     String baseUrl;
 
-    private UrlReceiverPresenter presenter;
+    private UrlReceiverPresenterImpl presenter;
 
     public YandexDownloadService() {
         super(null);
@@ -28,7 +28,7 @@ public class YandexDownloadService extends IntentService implements DownloadServ
     @Override
     protected void onHandleIntent(Intent intent) {
         if(presenter==null){
-            presenter = new UrlReceiverPresenter(new AndroidInterface(this), new AMSOperations(this));
+            presenter = new UrlReceiverPresenterImpl(new AndroidInterface(this), new AMSOperations(this));
             presenter.setView(this);
         }
         baseUrl = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -57,8 +57,4 @@ public class YandexDownloadService extends IntentService implements DownloadServ
         ToastService.show(getString(R.string.indef_path), this);
     }
 
-    @Override
-    public void playMusic(String music) {
-        AndroidInterface.playMusic(music, this);
-    }
 }

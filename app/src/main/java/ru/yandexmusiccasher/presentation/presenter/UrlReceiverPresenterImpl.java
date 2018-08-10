@@ -3,7 +3,7 @@ package ru.yandexmusiccasher.presentation.presenter;
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
+import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
 
@@ -11,12 +11,12 @@ import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
  * Created by grish on 08.07.2018.
  */
 
-public class UrlReceiverPresenter {
+public class UrlReceiverPresenterImpl implements UrlReceiverPresenter {
 
-    private UrlReceivedUseCase useCase;
+    private UrlReceivedInteractor useCase;
     private DownloadServiceView view;
 
-    public UrlReceiverPresenter(SystemInterface system, MusicStorageOperations operations){
+    public UrlReceiverPresenterImpl(SystemInterface system, MusicStorageOperations operations){
         useCase = new UrlReceivedInteractor(system, operations);
     }
 
@@ -28,23 +28,24 @@ public class UrlReceiverPresenter {
         useCase.downloadTrackByUrl(musicUrl, this);
     }
 
+    @Override
     public void onYandexCaptcha(HttpParams params) {
         view.openYandexCaptcha(params);
     }
 
+    @Override
     public void onInternetError() {
         view.showInternetError();
     }
 
+    @Override
     public void onParseError() {
         view.showParseError();
     }
 
+    @Override
     public void onUndefinedPath() {
         view.showIndefinitePathError();
     }
 
-    public void playMusic(String music) {
-        view.playMusic(music);
-    }
 }

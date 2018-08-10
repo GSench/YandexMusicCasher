@@ -3,26 +3,28 @@ package ru.yandexmusiccasher.presentation.presenter;
 import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.DownloadCompleteUseCase;
+import ru.yandexmusiccasher.domain.presenters.DownloadCompletePresenter;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
 
 /**
  * Created by Григорий Сенченок on 21.07.2018.
  */
 
-public class DownloadCompletePresenter {
+public class DownloadCompletePresenterImpl implements DownloadCompletePresenter {
 
-    private DownloadCompleteUseCase useCase;
+    private DownloadCompleteInteractor useCase;
     private DownloadCompleteView view;
 
-    public DownloadCompletePresenter(MusicStorageOperations operations){
+    public DownloadCompletePresenterImpl(MusicStorageOperations operations){
         useCase = new DownloadCompleteInteractor(operations);
     }
 
+    @Override
     public void copyingError() {
         view.copyingError();
     }
 
+    @Override
     public void unableToDeleteCashFile() {
         view.unableToDeleteCashFile();
     }

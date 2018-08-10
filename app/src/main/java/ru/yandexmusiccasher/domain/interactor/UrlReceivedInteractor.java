@@ -13,16 +13,15 @@ import ru.yandexmusiccasher.domain.YandexCaptchaException;
 import ru.yandexmusiccasher.domain.model.MusicFile;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.UrlReceivedUseCase;
+import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
 import ru.yandexmusiccasher.domain.utils.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
-import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenter;
 
 /**
  * Created by grish on 08.07.2018.
  */
 
-public class UrlReceivedInteractor implements UrlReceivedUseCase {
+public class UrlReceivedInteractor {
 
     private SystemInterface system;
     private MusicStorageOperations sOperations;
@@ -34,7 +33,6 @@ public class UrlReceivedInteractor implements UrlReceivedUseCase {
         httpHeadersManager = new HttpHeadersManager(system);
     }
 
-    @Override
     public void downloadTrackByUrl(String url, UrlReceiverPresenter presenter) {
 
         MusicStorage storage;

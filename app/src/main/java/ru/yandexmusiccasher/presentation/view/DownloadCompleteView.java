@@ -10,7 +10,6 @@ public interface DownloadCompleteView {
     public void downloadError();
     public void copyingError();
     public void unableToDeleteCashFile();
-    public void playMusic(String musicUri);
     public MusicFileCash getDownloadedFile();
 
 }

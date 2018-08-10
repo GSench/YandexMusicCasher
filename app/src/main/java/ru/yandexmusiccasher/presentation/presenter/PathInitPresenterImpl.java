@@ -3,19 +3,19 @@ package ru.yandexmusiccasher.presentation.presenter;
 import ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
-import ru.yandexmusiccasher.domain.usecase.PathInitializationUseCase;
+import ru.yandexmusiccasher.domain.presenters.PathInitPresenter;
 import ru.yandexmusiccasher.presentation.view.PathInitView;
 
 /**
  * Created by grish on 17.07.2018.
  */
 
-public class PathInitPresenter {
+public class PathInitPresenterImpl implements PathInitPresenter {
 
-    private PathInitializationUseCase useCase;
+    private PathInitializationInteractor useCase;
     private PathInitView view;
 
-    public PathInitPresenter(MusicStorageOperations operations){
+    public PathInitPresenterImpl(MusicStorageOperations operations){
         this.useCase=new PathInitializationInteractor(operations, this);
     }
 
@@ -35,10 +35,12 @@ public class PathInitPresenter {
         pickPath();
     }
 
+    @Override
     public void pickPath() {
         view.pickPath();
     }
 
+    @Override
     public void pathInitialized() {
         view.startDownloading();
     }

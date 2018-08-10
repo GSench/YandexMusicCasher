@@ -11,7 +11,7 @@ import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicCash;
-import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenter;
+import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenterImpl;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
 
@@ -22,7 +22,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
 
     private Context context;
     private Intent intent;
-    private DownloadCompletePresenter presenter;
+    private DownloadCompletePresenterImpl presenter;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,7 +31,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
         this.context=context;
         this.intent=intent;
 
-        presenter = new DownloadCompletePresenter(new AMSOperations(context));
+        presenter = new DownloadCompletePresenterImpl(new AMSOperations(context));
         presenter.setView(this);
         presenter.start();
     }
@@ -71,8 +71,4 @@ public class DownloadCompleteReceiver extends BroadcastReceiver implements Downl
         ToastService.show(context.getString(R.string.cash_error), context);
     }
 
-    @Override
-    public void playMusic(String musicUri) {
-        AndroidInterface.playMusic(musicUri, context);
-    }
 }
