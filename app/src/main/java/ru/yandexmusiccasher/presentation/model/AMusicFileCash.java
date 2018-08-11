@@ -107,6 +107,7 @@ public class AMusicFileCash extends MusicFileCash {
         newName = newName.substring(0, newName.lastIndexOf("album"))+"-tagged-"+newName.substring(newName.lastIndexOf("album"));
         File newFile = new File(file.getParentFile(), newName);
         mp3file.save(newFile.getAbsolutePath());
+        file.delete();
         file=newFile;
     }
 

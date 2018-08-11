@@ -7,6 +7,7 @@ import android.database.Cursor;
 
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
+import ru.yandexmusiccasher.domain.model.MusicInfo;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicCash;
@@ -54,8 +55,7 @@ public class DownloadCompleteService extends IntentService implements DownloadCo
                 path = c.getString(uriIndex);
             }
         }
-        String id = path.substring(path.lastIndexOf("album"), path.lastIndexOf("."));
-        return new AMusicCash(this).findById(id);
+        return new AMusicCash(this).findById(MusicInfo.extractIds(path));
     }
 
     @Override

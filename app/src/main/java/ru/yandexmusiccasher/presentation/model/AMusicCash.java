@@ -27,7 +27,7 @@ public class AMusicCash extends MusicCash {
     @Override
     public MusicFileCash findById(String id) {
         for (File file: path.listFiles()){
-            if(file.getName().endsWith(id+".mp3")) return new AMusicFileCash(id, file, context);
+            if(file.getName().contains(id)) return new AMusicFileCash(id, file, context);
         }
         return null;
     }

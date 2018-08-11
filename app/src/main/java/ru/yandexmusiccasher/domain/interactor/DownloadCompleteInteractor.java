@@ -14,6 +14,7 @@ import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.DownloadCompletePresenter;
 import ru.yandexmusiccasher.domain.services.Network;
 import ru.yandexmusiccasher.domain.services.YandexCaptchaException;
+import ru.yandexmusiccasher.domain.utils.Pair;
 
 /**
  * Created by Григорий Сенченок on 21.07.2018.
@@ -64,12 +65,11 @@ public class DownloadCompleteInteractor {
     }
 
     private MusicInfo getMusicInfo(String id) throws IOException, YandexCaptchaException, JSONException {
-        String trackId = id.substring(id.indexOf("track")+"track".length());
-        String albumId = id.substring("album".length(), id.indexOf("track"));
-        String url = "https://music.yandex.ru/handlers/track.jsx?track="+trackId+"%3A"+albumId;
+        Pair<String, String> track = MusicInfo.getAlbumAndTrackIds(id);
+        String url = "https://music.yandex.ru/handlers/track.jsx?track="+track.s+"%3A"+track.f;
         String response = network.yRequest(url);
         JSONObject jsonObject = new JSONObject(response);
-        return convert(jsonObject, trackId, albumId);
+        return convert(jsonObject, track.s, track.f);
     }
 
     private MusicInfo convert(JSONObject json, String trackId, String albumId){
@@ -81,7 +81,7 @@ public class DownloadCompleteInteractor {
         //publisher
         musicInfo.publisher = "Yandex.Music";
         //url
-        musicInfo.url = "https://music.yandex.ru/album/"+albumId+"/track/"+trackId;
+        musicInfo.url = MusicInfo.makeUrl(albumId, trackId);
 
         try {
 

@@ -28,7 +28,7 @@ public class AMusicStorage extends MusicStorage {
     @Override
     public MusicFile findById(String id) {
         for (DocumentFile file: documentFile.listFiles())
-            if(file.getName().endsWith(id+".mp3")) return new AMusicFile(id, context, file);
+            if(file.getName().contains(id)) return new AMusicFile(id, context, file);
         return null;
     }
 

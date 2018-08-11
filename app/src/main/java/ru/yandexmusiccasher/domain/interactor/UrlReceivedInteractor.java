@@ -8,11 +8,13 @@ import java.io.IOException;
 
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.model.MusicFile;
+import ru.yandexmusiccasher.domain.model.MusicInfo;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
 import ru.yandexmusiccasher.domain.services.Network;
 import ru.yandexmusiccasher.domain.services.YandexCaptchaException;
+import ru.yandexmusiccasher.domain.utils.Pair;
 
 /**
  * Created by grish on 08.07.2018.
@@ -49,9 +51,9 @@ public class UrlReceivedInteractor {
         }
 
 
-        String id = url.substring(url.lastIndexOf("/") + 1);
-        String album = url.substring(url.indexOf("album/") + "album/".length());
-        album = album.substring(0, album.indexOf("/"));
+        Pair<String, String> info = MusicInfo.getAlbumAndTrackIdsFromUrl(url);
+        String id = info.s;
+        String album = info.f;
 
         String trackUrl, trackTitle;
         try {
