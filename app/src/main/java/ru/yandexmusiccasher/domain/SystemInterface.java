@@ -3,7 +3,7 @@ package ru.yandexmusiccasher.domain;
 import java.io.IOException;
 import java.net.URL;
 
-import ru.yandexmusiccasher.domain.utils.HttpParams;
+import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.domain.utils.function;
 

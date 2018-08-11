@@ -4,7 +4,7 @@ import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
-import ru.yandexmusiccasher.domain.utils.HttpParams;
+import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
 
 /**

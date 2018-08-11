@@ -34,4 +34,7 @@
     <string name="indef_path">Путь сохранения не определен</string>
     <string name="copying_error">Ошибка копирования музыки в заданный путь</string>
     <string name="cash_error">Ошибка удаления кеша музыки</string>
+    <string name="error_writing_track_info">Ошибка записи информации о треке</string>
+    <string name="error_parsing_track_info">Ошибка распознавания информации о треке</string>
+    <string name="error_setting_music_info">Ошибка установки информацции о треке</string>
 </resources>

@@ -1,5 +1,9 @@
 package ru.yandexmusiccasher.domain.model;
 
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.NotSupportedException;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
 import java.io.IOException;
 
 /**
@@ -15,5 +19,7 @@ public abstract class MusicFileCash extends MusicFile {
     public abstract void delete();
 
     public abstract MusicFile copyTo(MusicStorage music) throws IOException;
+
+    public abstract void setMusicInfo(MusicInfo musicInfo) throws InvalidDataException, IOException, UnsupportedTagException, NotSupportedException;
 
 }

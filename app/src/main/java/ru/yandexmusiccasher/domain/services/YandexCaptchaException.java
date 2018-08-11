@@ -1,4 +1,4 @@
-package ru.yandexmusiccasher.domain;
+package ru.yandexmusiccasher.domain.services;
 
 /**
  * Created by grish on 08.07.2018.

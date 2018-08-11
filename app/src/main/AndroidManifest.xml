@@ -30,6 +30,7 @@
         <activity android:name=".presentation.view.activity.YandexVerifyActivity"
             android:screenOrientation="portrait"/>
         <service android:name=".presentation.view.service.YandexDownloadService"/>
+        <service android:name=".presentation.view.service.DownloadCompleteService"/>
         <service android:name=".presentation.utils.ToastService"/>
         <receiver
             android:name=".presentation.view.service.DownloadCompleteReceiver"

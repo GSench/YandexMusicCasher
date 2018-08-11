@@ -5,17 +5,14 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 
-import ru.yandexmusiccasher.domain.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.SystemInterface;
-import ru.yandexmusiccasher.domain.YandexCaptchaException;
 import ru.yandexmusiccasher.domain.model.MusicFile;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
-import ru.yandexmusiccasher.domain.utils.HttpParams;
-import ru.yandexmusiccasher.domain.utils.Pair;
+import ru.yandexmusiccasher.domain.services.Network;
+import ru.yandexmusiccasher.domain.services.YandexCaptchaException;
 
 /**
  * Created by grish on 08.07.2018.
@@ -25,12 +22,12 @@ public class UrlReceivedInteractor {
 
     private SystemInterface system;
     private MusicStorageOperations sOperations;
-    private HttpHeadersManager httpHeadersManager;
+    private Network network;
 
     public UrlReceivedInteractor(SystemInterface system, MusicStorageOperations sOperations){
         this.system=system;
         this.sOperations=sOperations;
-        httpHeadersManager = new HttpHeadersManager(system);
+        network = new Network(system);
     }
 
     public void downloadTrackByUrl(String url, UrlReceiverPresenter presenter) {
@@ -61,7 +58,7 @@ public class UrlReceivedInteractor {
             trackTitle = getTrack(id, album);
             trackUrl = getTrackUrl(id);
         } catch (YandexCaptchaException e) {
-            presenter.onYandexCaptcha(httpHeadersManager.getHttpParams());
+            presenter.onYandexCaptcha(network.getCurrentHttpParams());
             return;
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,10 +76,10 @@ public class UrlReceivedInteractor {
 
     private String getTrackUrl(String trackId) throws IOException, JSONException, YandexCaptchaException {
         String trackInfoUrl = "https://music.yandex.ru/api/v2.1/handlers/track/"+trackId+"/track/download/m?hq=1";
-        String trackInfo = yRequest(trackInfoUrl);
+        String trackInfo = network.yRequest(trackInfoUrl);
         JSONObject jObject = new JSONObject(trackInfo);
         String srcUrl = jObject.getString("src")+"&format=json";
-        String downloadInfo = yRequest(srcUrl);
+        String downloadInfo = network.yRequest(srcUrl);
         String salt = "XGRlBW9FXlekgbPrRHuSiA";
         JSONObject jDownloadInfo = new JSONObject(downloadInfo);
         String hash = system.md5(salt + jDownloadInfo.getString("path").substring(1) + jDownloadInfo.getString("s"));
@@ -91,7 +88,7 @@ public class UrlReceivedInteractor {
 
     private String getTrack(String trackId, String albumId) throws IOException, JSONException, YandexCaptchaException {
         String url = "https://music.yandex.ru/handlers/track.jsx?track="+trackId+"%3A"+albumId;
-        String response = yRequest(url);
+        String response = network.yRequest(url);
         JSONObject jsonObject = new JSONObject(response);
         JSONObject jsonArtist = jsonObject.getJSONArray("artists").getJSONObject(0);
         String artist = jsonArtist.getString("name");
@@ -102,20 +99,6 @@ public class UrlReceivedInteractor {
             version = jsonTrack.getString("version");
         } catch (Exception e){}
         return artist+" - "+title+" "+version;
-    }
-
-    private boolean yandexCheck(String response){
-        return response.contains("https://music.yandex.ru/captcha/");
-    }
-
-    private String yRequest(String url) throws YandexCaptchaException, IOException {
-        Pair<byte[], HttpParams> response = system.httpGet(new URL(url), httpHeadersManager.getHttpParams());
-        httpHeadersManager.updateHttpParams(response.s);
-        String txt = new String(response.f, "UTF-8");
-        if(yandexCheck(txt)){
-            throw new YandexCaptchaException();
-        }
-        return txt;
     }
 
 }

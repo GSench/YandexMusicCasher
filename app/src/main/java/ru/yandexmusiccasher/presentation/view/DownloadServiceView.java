@@ -1,6 +1,6 @@
 package ru.yandexmusiccasher.presentation.view;
 
-import ru.yandexmusiccasher.domain.utils.HttpParams;
+import ru.yandexmusiccasher.domain.services.HttpParams;
 
 /**
  * Created by grish on 20.07.2018.

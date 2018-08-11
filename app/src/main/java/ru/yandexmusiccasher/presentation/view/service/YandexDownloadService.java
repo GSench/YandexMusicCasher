@@ -3,7 +3,7 @@ package ru.yandexmusiccasher.presentation.view.service;
 import android.content.Intent;
 
 import ru.yandexmusiccasher.R;
-import ru.yandexmusiccasher.domain.utils.HttpParams;
+import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.presenter.UrlReceiverPresenterImpl;

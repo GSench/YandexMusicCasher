@@ -1,6 +1,8 @@
-package ru.yandexmusiccasher.domain.utils;
+package ru.yandexmusiccasher.domain.services;
 
 import java.util.ArrayList;
+
+import ru.yandexmusiccasher.domain.utils.Pair;
 
 /**
  * Created by Григорий Сенченок on 05.05.2017.

@@ -11,5 +11,7 @@ public interface DownloadCompleteView {
     public void copyingError();
     public void unableToDeleteCashFile();
     public MusicFileCash getDownloadedFile();
-
+    public void errorWritingTrackInfo();
+    public void errorParsingTrackInfo();
+    public void errorSettingMusicInfo();
 }

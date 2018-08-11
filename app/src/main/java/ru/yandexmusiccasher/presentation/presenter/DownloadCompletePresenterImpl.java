@@ -1,9 +1,11 @@
 package ru.yandexmusiccasher.presentation.presenter;
 
+import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.DownloadCompletePresenter;
+import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
 
 /**
@@ -15,8 +17,8 @@ public class DownloadCompletePresenterImpl implements DownloadCompletePresenter 
     private DownloadCompleteInteractor useCase;
     private DownloadCompleteView view;
 
-    public DownloadCompletePresenterImpl(MusicStorageOperations operations){
-        useCase = new DownloadCompleteInteractor(operations);
+    public DownloadCompletePresenterImpl(MusicStorageOperations operations, SystemInterface system){
+        useCase = new DownloadCompleteInteractor(operations, system);
     }
 
     @Override
@@ -27,6 +29,26 @@ public class DownloadCompletePresenterImpl implements DownloadCompletePresenter 
     @Override
     public void unableToDeleteCashFile() {
         view.unableToDeleteCashFile();
+    }
+
+    @Override
+    public void errorWritingTrackInfo() {
+        view.errorWritingTrackInfo();
+    }
+
+    @Override
+    public void onYandexCaptcha(HttpParams currentHttpParams) {
+
+    }
+
+    @Override
+    public void errorParsingTrackInfo() {
+        view.errorParsingTrackInfo();
+    }
+
+    @Override
+    public void errorSettingMusicInfo() {
+        view.errorSettingMusicInfo();
     }
 
     public void setView(DownloadCompleteView view) {
