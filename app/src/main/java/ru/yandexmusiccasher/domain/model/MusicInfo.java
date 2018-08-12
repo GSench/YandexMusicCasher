@@ -39,9 +39,9 @@ public class MusicInfo {
     public static Pair<String, String> getAlbumAndTrackIds(String str){
         Pattern p = Pattern.compile("album\\d+track\\d+");
         Matcher m = p.matcher(str);
-        if(!m.matches()) return null;
+        if(!m.find()) return null;
         String raw = m.group();
-        String album = raw.substring(0, "album".length());
+        String album = raw.substring("album".length(), raw.indexOf("track"));
         String track = raw.substring(raw.indexOf("k")+1);
         return new Pair<>(album, track);
     }
@@ -49,7 +49,7 @@ public class MusicInfo {
     public static String extractIds(String from){
         Pattern p = Pattern.compile("album\\d+track\\d+");
         Matcher m = p.matcher(from);
-        if(!m.matches()) return null;
+        if(!m.find()) return null;
         return m.group();
     }
 

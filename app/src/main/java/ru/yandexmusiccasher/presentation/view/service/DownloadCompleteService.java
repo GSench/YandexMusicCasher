@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
@@ -55,7 +56,7 @@ public class DownloadCompleteService extends IntentService implements DownloadCo
                 path = c.getString(uriIndex);
             }
         }
-        return new AMusicCash(this).findById(MusicInfo.extractIds(path));
+        return new AMusicCash(this).findById(MusicInfo.extractIds(Uri.parse(path).getLastPathSegment()));
     }
 
     @Override
