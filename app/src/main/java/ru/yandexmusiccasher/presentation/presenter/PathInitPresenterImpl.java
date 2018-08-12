@@ -42,6 +42,18 @@ public class PathInitPresenterImpl implements PathInitPresenter {
 
     @Override
     public void pathInitialized() {
+
+    }
+
+    public void download() {
         view.startDownloading();
+    }
+
+    public void downloadPlay() {
+        view.startDownloadingPlaying();
+    }
+
+    public void play() {
+        view.startPlaying();
     }
 }

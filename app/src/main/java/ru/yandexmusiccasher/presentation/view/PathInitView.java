@@ -7,6 +7,7 @@ package ru.yandexmusiccasher.presentation.view;
 public interface PathInitView {
 
     public void pickPath();
+    public void startDownloadingPlaying();
     public void startDownloading();
-
+    public void startPlaying();
 }

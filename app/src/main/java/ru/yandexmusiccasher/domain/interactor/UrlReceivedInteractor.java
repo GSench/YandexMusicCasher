@@ -22,6 +22,10 @@ import ru.yandexmusiccasher.domain.utils.Pair;
 
 public class UrlReceivedInteractor {
 
+    public static final int PLAY = 1;
+    public static final int DOWNLOAD = 2;
+    public static final int DOWNLOAD_PLAY = 3;
+
     private SystemInterface system;
     private MusicStorageOperations sOperations;
     private Network network;

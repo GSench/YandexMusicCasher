@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicStorage;
 import ru.yandexmusiccasher.presentation.presenter.PathInitPresenterImpl;
@@ -26,6 +28,7 @@ public class ReceiveActivity extends AppCompatActivity implements PathInitView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.receive_activity);
         presenter = new PathInitPresenterImpl(new AMSOperations(this));
         presenter.setView(this);
         presenter.start();
@@ -66,8 +69,38 @@ public class ReceiveActivity extends AppCompatActivity implements PathInitView {
     }
 
     @Override
-    public void startDownloading() {
-        startService(new Intent(this, YandexDownloadService.class).putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT)));
+    public void startDownloadingPlaying() {
+        startService(new Intent(this, YandexDownloadService.class)
+                .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.DOWNLOAD_PLAY));
         finish();
+    }
+
+    @Override
+    public void startDownloading() {
+        startService(new Intent(this, YandexDownloadService.class)
+                .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.DOWNLOAD));
+        finish();
+    }
+
+    @Override
+    public void startPlaying() {
+        startService(new Intent(this, YandexDownloadService.class)
+                .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.PLAY));
+        finish();
+    }
+
+    public void download(View view){
+        presenter.download();
+    }
+
+    public void downloadPlay(View view){
+        presenter.downloadPlay();
+    }
+
+    public void play(View view){
+        presenter.play();
     }
 }

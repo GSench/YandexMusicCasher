@@ -17,6 +17,8 @@ import ru.yandexmusiccasher.presentation.view.activity.YandexVerifyActivity;
  */
 public class YandexDownloadService extends IntentService implements DownloadServiceView {
 
+    public static final String DOWNLOAD_PLAY_STRATEGY = "strategy";
+
     String baseUrl;
 
     private UrlReceiverPresenterImpl presenter;

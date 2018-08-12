@@ -16,7 +16,7 @@ public class MainActivity extends ReceiveActivity {
     }
 
     @Override
-    public void startDownloading() {
+    public void startDownloadingPlaying() {
         System.out.println("Path appears to be: "+getSharedPreferences("preferences", MODE_PRIVATE).getString("music_dir", "null"));
     }
 
