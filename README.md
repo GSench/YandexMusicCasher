@@ -1,6 +1,6 @@
 # YandexMusicCasher
 
-# Android приложение для скачивания Яндекс Музыки #
+## Android приложение для скачивания Яндекс Музыки ##
 
 Приложение позволит вам сохранять и прослушивать аудиозаписи из приложения Яндекс.Музыка
 
@@ -20,7 +20,7 @@
 
 ![guide_two_mini.png](https://github.com/GSench/YandexMusicCasher/blob/master/app/src/main/res/drawable-nodpi/guide_two_mini.png)
 
-4) Загружаемый файл появится в с панели уведомлений. Музыка сохраняется в папку /storage/emulated/0/music_cash/
+4) Загружаемый файл появится в с панели уведомлений.
 
 ![guide_three_mini.png](https://github.com/GSench/YandexMusicCasher/blob/master/app/src/main/res/drawable-nodpi/guide_three_mini.png)
 
