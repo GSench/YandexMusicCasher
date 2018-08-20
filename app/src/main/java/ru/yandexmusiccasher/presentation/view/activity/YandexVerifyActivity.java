@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 
 import ru.yandexmusiccasher.R;
+import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.domain.services.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
@@ -77,6 +78,7 @@ public class YandexVerifyActivity extends AppCompatActivity {
     private void exit(){
         Intent intent = new Intent(YandexVerifyActivity.this, YandexDownloadService.class);
         intent.putExtra(Intent.EXTRA_TEXT, uri);
+        intent.putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, getIntent().getIntExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, DownloadCompleteInteractor.DOWNLOAD_PLAY));
         startService(intent);
         finish();
     }
