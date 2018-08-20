@@ -5,11 +5,20 @@ import java.util.regex.Pattern;
 
 import ru.yandexmusiccasher.domain.utils.Pair;
 
+import static ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor.DOWNLOAD;
+import static ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor.DOWNLOAD_PLAY;
+import static ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor.PLAY;
+
 /**
  * Created by grish on 11.08.2018.
  */
 
 public class MusicInfo {
+
+    private static final String strategy = "strtg";
+    public static final String play = "po";
+    public static final String download = "do";
+    public static final String download_play = "dp";
 
     public String track;
     public String artist;
@@ -51,6 +60,27 @@ public class MusicInfo {
         Matcher m = p.matcher(from);
         if(!m.find()) return null;
         return m.group();
+    }
+
+    public static String setStrategy(int strategy){
+        String strategyName = download_play;
+        switch (strategy){
+            case PLAY: strategyName = play; break;
+            case DOWNLOAD: strategyName = download; break;
+            case DOWNLOAD_PLAY: strategyName = download_play; break;
+        }
+        return MusicInfo.strategy+strategyName;
+    }
+
+    public static int getStrategy(String from){
+        Pattern p = Pattern.compile(strategy+"("+play+"|"+download+"|"+download_play+")");
+        Matcher m = p.matcher(from);
+        if(!m.find()) return DOWNLOAD_PLAY;
+        String found = m.group();
+        if(found.equals(strategy+play)) return PLAY;
+        if(found.equals(strategy+download)) return DOWNLOAD;
+        if(found.equals(strategy+download_play)) return DOWNLOAD_PLAY;
+        return DOWNLOAD_PLAY;
     }
 
     public static String makeUrl(String album, String track){

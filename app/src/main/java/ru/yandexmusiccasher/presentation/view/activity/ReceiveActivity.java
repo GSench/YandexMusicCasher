@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import ru.yandexmusiccasher.R;
-import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
+import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicStorage;
 import ru.yandexmusiccasher.presentation.presenter.ReceivePresenter;
@@ -72,7 +72,7 @@ public class ReceiveActivity extends AppCompatActivity implements UrlReceivedVie
     public void startDownloadingPlaying() {
         startService(new Intent(this, YandexDownloadService.class)
                 .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
-                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.DOWNLOAD_PLAY));
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, DownloadCompleteInteractor.DOWNLOAD_PLAY));
         finish();
     }
 
@@ -80,7 +80,7 @@ public class ReceiveActivity extends AppCompatActivity implements UrlReceivedVie
     public void startDownloading() {
         startService(new Intent(this, YandexDownloadService.class)
                 .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
-                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.DOWNLOAD));
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, DownloadCompleteInteractor.DOWNLOAD));
         finish();
     }
 
@@ -88,7 +88,7 @@ public class ReceiveActivity extends AppCompatActivity implements UrlReceivedVie
     public void startPlaying() {
         startService(new Intent(this, YandexDownloadService.class)
                 .putExtra(Intent.EXTRA_TEXT, getIntent().getStringExtra(Intent.EXTRA_TEXT))
-                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, UrlReceivedInteractor.PLAY));
+                .putExtra(YandexDownloadService.DOWNLOAD_PLAY_STRATEGY, DownloadCompleteInteractor.PLAY));
         finish();
     }
 

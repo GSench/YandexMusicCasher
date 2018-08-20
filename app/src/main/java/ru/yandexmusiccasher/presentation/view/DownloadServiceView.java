@@ -1,5 +1,6 @@
 package ru.yandexmusiccasher.presentation.view;
 
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.services.HttpParams;
 
 /**
@@ -12,4 +13,5 @@ public interface DownloadServiceView {
     public void showInternetError();
     public void showParseError();
     public void showIndefinitePathError();
+    public void continueWithoutDownloading(MusicFileCash musicFileCash);
 }

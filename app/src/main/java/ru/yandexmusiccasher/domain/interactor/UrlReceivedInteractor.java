@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.model.MusicFile;
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicInfo;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
@@ -22,10 +23,6 @@ import ru.yandexmusiccasher.domain.utils.Pair;
 
 public class UrlReceivedInteractor {
 
-    public static final int PLAY = 1;
-    public static final int DOWNLOAD = 2;
-    public static final int DOWNLOAD_PLAY = 3;
-
     private SystemInterface system;
     private MusicStorageOperations sOperations;
     private Network network;
@@ -36,7 +33,7 @@ public class UrlReceivedInteractor {
         network = new Network(system);
     }
 
-    public void downloadTrackByUrl(String url, UrlReceiverPresenter presenter) {
+    public void downloadTrackByUrl(String url, int strategy, UrlReceiverPresenter presenter) {
 
         MusicStorage storage;
         try {
@@ -49,8 +46,14 @@ public class UrlReceivedInteractor {
         String trackID = (url.substring(url.indexOf("/album"))).replaceAll("/", "");
 
         MusicFile musicFile = storage.findById(trackID);
-        if(musicFile!=null){
+        if(musicFile!=null&&(strategy==DownloadCompleteInteractor.DOWNLOAD_PLAY||strategy==DownloadCompleteInteractor.PLAY)){
             musicFile.play();
+            return;
+        }
+        if(musicFile!=null&&strategy==DownloadCompleteInteractor.DOWNLOAD) return;
+        MusicFileCash musicFileCash = sOperations.getMusicCash().findById(trackID);
+        if(musicFileCash!=null){
+            presenter.onMusicAlreadyInCash(musicFileCash);
             return;
         }
 
@@ -76,7 +79,7 @@ public class UrlReceivedInteractor {
             return;
         }
 
-        String filename = trackTitle+trackID;
+        String filename = trackTitle+MusicInfo.setStrategy(strategy)+trackID;
         sOperations.getMusicCash().download(trackUrl, filename);
     }
 

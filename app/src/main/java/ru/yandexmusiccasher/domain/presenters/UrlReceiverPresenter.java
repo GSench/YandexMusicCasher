@@ -1,5 +1,6 @@
 package ru.yandexmusiccasher.domain.presenters;
 
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.services.HttpParams;
 
 /**
@@ -12,5 +13,5 @@ public interface UrlReceiverPresenter {
     public void onYandexCaptcha(HttpParams httpParams);
     public void onInternetError();
     public void onParseError();
-
+    public void onMusicAlreadyInCash(MusicFileCash musicFileCash);
 }

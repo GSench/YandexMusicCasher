@@ -22,6 +22,10 @@ import ru.yandexmusiccasher.domain.utils.Pair;
 
 public class DownloadCompleteInteractor {
 
+    public static final int PLAY = 1;
+    public static final int DOWNLOAD = 2;
+    public static final int DOWNLOAD_PLAY = 3;
+
     private MusicStorageOperations operations;
     private Network network;
 
@@ -31,7 +35,7 @@ public class DownloadCompleteInteractor {
     }
 
     public void fileDownloaded(MusicFileCash fileCash, DownloadCompletePresenter presenter) {
-        MusicFile music = null;
+        int strategy = MusicInfo.getStrategy(fileCash.getName());
         try {
             MusicInfo musicInfo = getMusicInfo(fileCash.getId());
             fileCash.setMusicInfo(musicInfo);
@@ -48,6 +52,11 @@ public class DownloadCompleteInteractor {
             e.printStackTrace();
             presenter.errorSettingMusicInfo();
         }
+        if(strategy==PLAY){
+            fileCash.play();
+            return;
+        }
+        MusicFile music = null;
         try{
             music = fileCash.copyTo(operations.getMusicStorage());
         } catch (Exception e){
@@ -55,12 +64,14 @@ public class DownloadCompleteInteractor {
             presenter.copyingError();
             return;
         }
-        music.play();
         try {
             fileCash.delete();
         } catch (Exception e){
             e.printStackTrace();
             presenter.unableToDeleteCashFile();
+        }
+        if(strategy==DOWNLOAD_PLAY){
+            music.play();
         }
     }
 

@@ -112,6 +112,11 @@ public class AMusicFileCash extends MusicFileCash {
     }
 
     @Override
+    public String getName() {
+        return file.getName();
+    }
+
+    @Override
     public void play() {
         Intent player = new Intent(Intent.ACTION_VIEW);
         player.setDataAndType(Uri.fromFile(file), "audio/mp3");
@@ -119,5 +124,9 @@ public class AMusicFileCash extends MusicFileCash {
         if (player.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(player);
         } else ToastService.show(context.getString(R.string.no_music_app), context);
+    }
+
+    public String getFullPath() {
+        return file.getAbsolutePath();
     }
 }

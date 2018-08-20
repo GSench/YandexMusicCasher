@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.io.File;
+
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicInfo;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicCash;
+import ru.yandexmusiccasher.presentation.model.AMusicFileCash;
 import ru.yandexmusiccasher.presentation.presenter.DownloadCompletePresenterImpl;
 import ru.yandexmusiccasher.presentation.utils.IntentService;
 import ru.yandexmusiccasher.presentation.utils.ToastService;
@@ -22,6 +25,8 @@ import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
  */
 
 public class DownloadCompleteService extends IntentService implements DownloadCompleteView {
+
+    public static final String MUSIC_FILE_EXTRA = "musicFileExtra";
 
     private DownloadCompletePresenterImpl presenter;
     private Intent currentIntent;
@@ -43,7 +48,11 @@ public class DownloadCompleteService extends IntentService implements DownloadCo
     @Override
     public MusicFileCash getDownloadedFile(){
         String path = null;
-        long downloadId = currentIntent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+        long downloadId = currentIntent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+        if(downloadId==-1){
+            path = currentIntent.getStringExtra(MUSIC_FILE_EXTRA);
+            return new AMusicFileCash(MusicInfo.extractIds(path), new File(path), this);
+        }
         DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(downloadId);

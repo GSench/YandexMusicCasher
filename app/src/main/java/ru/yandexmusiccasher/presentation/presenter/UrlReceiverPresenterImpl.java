@@ -2,6 +2,7 @@ package ru.yandexmusiccasher.presentation.presenter;
 
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
+import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
 import ru.yandexmusiccasher.domain.services.HttpParams;
@@ -24,8 +25,8 @@ public class UrlReceiverPresenterImpl implements UrlReceiverPresenter {
         this.view=view;
     }
 
-    public void urlReceived(String musicUrl){
-        useCase.downloadTrackByUrl(musicUrl, this);
+    public void urlReceived(String musicUrl, int strategy){
+        useCase.downloadTrackByUrl(musicUrl, strategy, this);
     }
 
     @Override
@@ -41,6 +42,11 @@ public class UrlReceiverPresenterImpl implements UrlReceiverPresenter {
     @Override
     public void onParseError() {
         view.showParseError();
+    }
+
+    @Override
+    public void onMusicAlreadyInCash(MusicFileCash musicFileCash) {
+        view.continueWithoutDownloading(musicFileCash);
     }
 
     @Override
