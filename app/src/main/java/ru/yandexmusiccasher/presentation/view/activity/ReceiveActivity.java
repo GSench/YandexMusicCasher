@@ -12,24 +12,24 @@ import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicStorage;
-import ru.yandexmusiccasher.presentation.presenter.PathInitPresenterImpl;
-import ru.yandexmusiccasher.presentation.view.PathInitView;
+import ru.yandexmusiccasher.presentation.presenter.ReceivePresenter;
+import ru.yandexmusiccasher.presentation.view.UrlReceivedView;
 import ru.yandexmusiccasher.presentation.view.service.YandexDownloadService;
 
 /**
  * Created by GSench on 02.06.2016.
  */
-public class ReceiveActivity extends AppCompatActivity implements PathInitView {
+public class ReceiveActivity extends AppCompatActivity implements UrlReceivedView {
 
     private final int PICK_PATH = 1;
 
-    private PathInitPresenterImpl presenter;
+    private ReceivePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive_activity);
-        presenter = new PathInitPresenterImpl(new AMSOperations(this));
+        presenter = new ReceivePresenter(new AMSOperations(this));
         presenter.setView(this);
         presenter.start();
     }

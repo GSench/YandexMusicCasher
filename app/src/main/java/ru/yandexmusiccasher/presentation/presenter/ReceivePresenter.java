@@ -4,22 +4,22 @@ import ru.yandexmusiccasher.domain.interactor.PathInitializationInteractor;
 import ru.yandexmusiccasher.domain.model.MusicStorage;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.PathInitPresenter;
-import ru.yandexmusiccasher.presentation.view.PathInitView;
+import ru.yandexmusiccasher.presentation.view.UrlReceivedView;
 
 /**
  * Created by grish on 17.07.2018.
  */
 
-public class PathInitPresenterImpl implements PathInitPresenter {
+public class ReceivePresenter implements PathInitPresenter {
 
     private PathInitializationInteractor useCase;
-    private PathInitView view;
+    private UrlReceivedView view;
 
-    public PathInitPresenterImpl(MusicStorageOperations operations){
+    public ReceivePresenter(MusicStorageOperations operations){
         this.useCase=new PathInitializationInteractor(operations, this);
     }
 
-    public void setView(PathInitView view){
+    public void setView(UrlReceivedView view){
         this.view=view;
     }
 
