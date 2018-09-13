@@ -87,4 +87,28 @@ public class MusicInfo {
         return "https://music.yandex.ru/album/"+album+"/track/"+track;
     }
 
+    public static String updateStrategy(String filename, int newStrategy) {
+        if(filename.contains(strategy)){
+            String newName = filename.substring(0, filename.indexOf(strategy)+strategy.length());
+            switch (newStrategy){
+                case PLAY: newName += play; break;
+                case DOWNLOAD: newName += download; break;
+                case DOWNLOAD_PLAY: newName += download_play; break;
+            }
+            newName += filename.substring(filename.indexOf(strategy)+strategy.length()+2);
+            return newName;
+        } else {
+            String nameWOEt = filename;
+            if(filename.contains(".")) nameWOEt = filename.substring(0, filename.lastIndexOf("."));
+            String strategyName = download_play;
+            switch (newStrategy){
+                case PLAY: strategyName = play; break;
+                case DOWNLOAD: strategyName = download; break;
+                case DOWNLOAD_PLAY: strategyName = download_play; break;
+            }
+            nameWOEt+=(MusicInfo.strategy+strategyName);
+            nameWOEt+=filename.substring(filename.lastIndexOf("."));
+            return nameWOEt;
+        }
+    }
 }

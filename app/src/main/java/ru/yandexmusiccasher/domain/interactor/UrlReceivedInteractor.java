@@ -45,19 +45,31 @@ public class UrlReceivedInteractor {
 
         String trackID = (url.substring(url.indexOf("/album"))).replaceAll("/", "");
 
+        System.out.println("Track: "+trackID+" strategy: "+strategy);
+
         MusicFile musicFile = storage.findById(trackID);
+        if(musicFile!=null) System.out.println("Already saved");
         if(musicFile!=null&&(strategy==DownloadCompleteInteractor.DOWNLOAD_PLAY||strategy==DownloadCompleteInteractor.PLAY)){
+            System.out.println("Just playing");
             musicFile.play();
             return;
         }
-        if(musicFile!=null&&strategy==DownloadCompleteInteractor.DOWNLOAD) return;
+        if(musicFile!=null&&strategy==DownloadCompleteInteractor.DOWNLOAD){
+            System.out.println("Nothing to do");
+            return;
+        }
         MusicFileCash musicFileCash = sOperations.getMusicCash().findById(trackID);
         if(musicFileCash!=null){
+            System.out.println("Already in cash: "+trackID+" strategy: "+strategy);
+            String filename = musicFileCash.getName();
+            String newName = MusicInfo.updateStrategy(filename, strategy);
+            System.out.println("oldName: "+filename+" Renaming to: "+newName);
+            musicFileCash.renameTo(newName);
             presenter.onMusicAlreadyInCash(musicFileCash);
             return;
         }
 
-
+        System.out.println("Continue with downloading");
         Pair<String, String> info = MusicInfo.getAlbumAndTrackIdsFromUrl(url);
         String id = info.s;
         String album = info.f;

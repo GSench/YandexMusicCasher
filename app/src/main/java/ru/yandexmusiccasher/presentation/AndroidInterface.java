@@ -9,6 +9,8 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -36,8 +38,11 @@ public class AndroidInterface implements SystemInterface {
     private Context act;
     public static final String SPREF = "preferences";
 
+    public static CookieManager cookieManager = new CookieManager();
+
     public AndroidInterface(Context act){
         this.act = act;
+        CookieHandler.setDefault(cookieManager);
     }
 
     @Override
@@ -54,10 +59,18 @@ public class AndroidInterface implements SystemInterface {
     @Override
     public Pair<byte[], HttpParams> httpGet(URL url, HttpParams params) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        System.out.println("--REQUEST--");
+        /**
         if(params!=null){
             for(Pair<String, String> header: params.getHeaders()){
                 urlConnection.setRequestProperty(header.f, header.s);
+                System.out.println(header.f+"  /  "+header.s);
             }
+        }*/
+        Iterator<Map.Entry<String, List<String>>> headersOut = urlConnection.getRequestProperties().entrySet().iterator();
+        while (headersOut.hasNext()) {
+            Map.Entry<String, List<String>> entry = headersOut.next();
+            System.out.println(entry.getKey()+"  /  "+entry.getValue().get(0));
         }
         urlConnection.setRequestMethod("GET");
         try {
@@ -71,9 +84,11 @@ public class AndroidInterface implements SystemInterface {
             //proceeding response parameters
             HttpParams response = new HttpParams();
             ArrayList<Pair<String, String>> headersParam = new ArrayList<>();
+            System.out.println("--RESPONSE--");
             while (headers.hasNext()){
                 Map.Entry<String, List<String>> entry = headers.next();
                 headersParam.add(new Pair<>(entry.getKey(), entry.getValue().get(0)));
+                System.out.println(headersParam.get(headersParam.size()-1).f+"  /  "+headersParam.get(headersParam.size()-1).s);
             }
             response.setHeaders(headersParam);
             response.setResultCode(responseCode);

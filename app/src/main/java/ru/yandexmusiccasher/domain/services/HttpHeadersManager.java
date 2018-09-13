@@ -1,6 +1,7 @@
 package ru.yandexmusiccasher.domain.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.utils.Pair;
@@ -38,19 +39,44 @@ public class HttpHeadersManager {
 
     public void updateHttpParams(HttpParams received){
         for(Pair<String, String> param: received.getHeaders())
-            if("set-cookie".equals(param.f)){ //finds "Set-Cookie" header from received ones
+            if(param.f!=null&&"set-cookie".equals(param.f.toLowerCase().trim())){ //finds "Set-Cookie" header from received ones
                 ArrayList<Pair<String, String>> headers = httpParams.getHeaders();
                 int i;
                 for(i=0; i<headers.size(); i++)
                     if(headers.get(i).f.equals("Cookie")) { //finds "Cookie" header from old ones
-                        headers.add(i, new Pair<String, String>("Cookie",
-                                headers.get(i).s + (headers.get(i).s.equals("") ? "" : "; ") + param.s)); //adds new cookies to old ones
+                        String old = headers.get(i).s;
+                        headers.remove(i);
+                        headers.add(i, new Pair<String, String>("Cookie", updateCookies(old,param.s))); //adds new cookies to old ones
                         break;
                     }
                 system.saveString(COOKIES, headers.get(i).s);
                 httpParams.setHeaders(headers);
                 break;
             }
+    }
+
+    public static String updateCookies(String oldOnes, String newOnes){
+        String[] newCookies = newOnes.split(";");
+        ArrayList<String> oldCookies = new ArrayList<>(Arrays.asList(oldOnes.split(";")));
+        if(oldCookies.size()==1&&oldCookies.get(0).trim().equals("")) oldCookies = new ArrayList<String>();
+        String keyOld, keyNew;
+        int i,j;
+        for(i=0; i<newCookies.length; i++){
+            keyNew = newCookies[i].contains("=") ? newCookies[i].split("=")[0] : newCookies[i];
+            for(j=0; j<oldCookies.size(); j++){
+                keyOld = oldCookies.get(j).contains("=") ? oldCookies.get(j).split("=")[0] : oldCookies.get(j);
+                if(keyNew.equals(keyOld)){
+                    oldCookies.remove(i);
+                    oldCookies.add(j, newCookies[i]);
+                    break;
+                }
+            }
+            if(j==oldCookies.size()) oldCookies.add(newCookies[i]);
+        }
+        StringBuilder ret = new StringBuilder();
+        for(String cookie: oldCookies) ret.append(cookie).append("; ");
+        ret.delete(ret.length()-2, ret.length());
+        return ret.toString();
     }
 
 

@@ -117,6 +117,11 @@ public class AMusicFileCash extends MusicFileCash {
     }
 
     @Override
+    public void renameTo(String newName) {
+        file.renameTo(new File(file.getParentFile(), newName));
+    }
+
+    @Override
     public void play() {
         Intent player = new Intent(Intent.ACTION_VIEW);
         player.setDataAndType(Uri.fromFile(file), "audio/mp3");
