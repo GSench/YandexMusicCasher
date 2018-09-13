@@ -52,11 +52,17 @@ public class UrlReceivedInteractor {
         }
         if(musicFile!=null&&strategy==DownloadCompleteInteractor.DOWNLOAD) return;
         MusicFileCash musicFileCash = sOperations.getMusicCash().findById(trackID);
-        if(musicFileCash!=null){
+        if(musicFileCash!=null&&(strategy==DownloadCompleteInteractor.DOWNLOAD||strategy==DownloadCompleteInteractor.DOWNLOAD_PLAY)){
+            String filename = musicFileCash.getName();
+            String newName = MusicInfo.updateStrategy(filename, strategy);
+            musicFileCash.renameTo(newName);
             presenter.onMusicAlreadyInCash(musicFileCash);
             return;
         }
-
+        if(musicFileCash!=null&&strategy==DownloadCompleteInteractor.PLAY){
+            musicFileCash.play();
+            return;
+        }
 
         Pair<String, String> info = MusicInfo.getAlbumAndTrackIdsFromUrl(url);
         String id = info.s;

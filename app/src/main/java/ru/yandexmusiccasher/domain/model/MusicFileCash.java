@@ -23,4 +23,7 @@ public abstract class MusicFileCash extends MusicFile {
     public abstract void setMusicInfo(MusicInfo musicInfo) throws InvalidDataException, IOException, UnsupportedTagException, NotSupportedException;
 
     public abstract String getName();
+
+    public abstract void renameTo(String newName);
+
 }
