@@ -1,7 +1,6 @@
 package ru.yandexmusiccasher.presentation.view;
 
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
-import ru.yandexmusiccasher.domain.services.HttpParams;
 
 /**
  * Created by grish on 20.07.2018.
@@ -9,7 +8,7 @@ import ru.yandexmusiccasher.domain.services.HttpParams;
 
 public interface DownloadServiceView {
 
-    public void openYandexCaptcha(HttpParams httpParams);
+    public void openYandexCaptcha();
     public void showInternetError();
     public void showParseError();
     public void showIndefinitePathError();

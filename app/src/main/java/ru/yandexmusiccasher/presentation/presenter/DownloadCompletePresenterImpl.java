@@ -5,7 +5,6 @@ import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.DownloadCompletePresenter;
-import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadCompleteView;
 
 /**
@@ -37,8 +36,8 @@ public class DownloadCompletePresenterImpl implements DownloadCompletePresenter 
     }
 
     @Override
-    public void onYandexCaptcha(HttpParams currentHttpParams) {
-
+    public void onYandexCaptcha() {
+        //TODO
     }
 
     @Override

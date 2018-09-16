@@ -5,7 +5,6 @@ import android.content.Intent;
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
-import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.model.AMSOperations;
 import ru.yandexmusiccasher.presentation.model.AMusicFileCash;
@@ -44,7 +43,7 @@ public class YandexDownloadService extends IntentService implements DownloadServ
 
 
     @Override
-    public void openYandexCaptcha(HttpParams httpParams) {
+    public void openYandexCaptcha() {
         breakQueue();
         startActivity(new Intent(this, YandexVerifyActivity.class)
                 .putExtra(Intent.EXTRA_TEXT, baseUrl)

@@ -5,7 +5,6 @@ import ru.yandexmusiccasher.domain.interactor.UrlReceivedInteractor;
 import ru.yandexmusiccasher.domain.model.MusicFileCash;
 import ru.yandexmusiccasher.domain.model.MusicStorageOperations;
 import ru.yandexmusiccasher.domain.presenters.UrlReceiverPresenter;
-import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.presentation.view.DownloadServiceView;
 
 /**
@@ -30,8 +29,8 @@ public class UrlReceiverPresenterImpl implements UrlReceiverPresenter {
     }
 
     @Override
-    public void onYandexCaptcha(HttpParams params) {
-        view.openYandexCaptcha(params);
+    public void onYandexCaptcha() {
+        view.openYandexCaptcha();
     }
 
     @Override

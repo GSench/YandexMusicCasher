@@ -17,8 +17,8 @@ import java.net.URL;
 
 import ru.yandexmusiccasher.R;
 import ru.yandexmusiccasher.domain.interactor.DownloadCompleteInteractor;
-import ru.yandexmusiccasher.domain.services.HttpHeadersManager;
 import ru.yandexmusiccasher.domain.services.HttpParams;
+import ru.yandexmusiccasher.domain.services.Network;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.presentation.AndroidInterface;
 import ru.yandexmusiccasher.presentation.view.service.YandexDownloadService;
@@ -40,8 +40,7 @@ public class YandexVerifyActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
 
         final AndroidInterface system = new AndroidInterface(this);
-        final HttpHeadersManager httpHeadersManager = new HttpHeadersManager(system);
-        httpHeadersManager.initHttpParams();
+        final Network network = new Network(system);
 
         webView.setWebViewClient(new WebViewClient(){
 
@@ -58,8 +57,7 @@ public class YandexVerifyActivity extends AppCompatActivity {
                 String ext = FilenameUtils.getExtension(url);
                 String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.equals("") ? "html" : ext);
                 try{
-                    Pair<byte[], HttpParams> rawResponse = system.httpGet(new URL(url), httpHeadersManager.getHttpParams());
-                    httpHeadersManager.updateHttpParams(rawResponse.s);
+                    Pair<byte[], HttpParams> rawResponse = system.httpGet(new URL(url), network.getInitialHttpParams());
                     response = new WebResourceResponse(mime, "utf-8", new ByteArrayInputStream(rawResponse.f));
                 } catch (Exception e){
                     e.printStackTrace();

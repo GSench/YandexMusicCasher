@@ -73,7 +73,7 @@ public class UrlReceivedInteractor {
             trackTitle = getTrack(id, album);
             trackUrl = getTrackUrl(id);
         } catch (YandexCaptchaException e) {
-            presenter.onYandexCaptcha(network.getCurrentHttpParams());
+            presenter.onYandexCaptcha();
             return;
         } catch (IOException e) {
             e.printStackTrace();

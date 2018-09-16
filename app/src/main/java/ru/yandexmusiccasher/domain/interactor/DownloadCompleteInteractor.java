@@ -44,7 +44,7 @@ public class DownloadCompleteInteractor {
             presenter.errorWritingTrackInfo();
         } catch (YandexCaptchaException e) {
             e.printStackTrace();
-            presenter.onYandexCaptcha(network.getCurrentHttpParams());
+            presenter.onYandexCaptcha();
         } catch (JSONException e) {
             e.printStackTrace();
             presenter.errorParsingTrackInfo();

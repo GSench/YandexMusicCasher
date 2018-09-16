@@ -9,6 +9,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.CookieStore;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -25,6 +29,7 @@ import ru.yandexmusiccasher.domain.SystemInterface;
 import ru.yandexmusiccasher.domain.services.HttpParams;
 import ru.yandexmusiccasher.domain.utils.Pair;
 import ru.yandexmusiccasher.domain.utils.function;
+import ru.yandexmusiccasher.presentation.utils.PersistentCookieStore;
 
 
 /**
@@ -36,8 +41,15 @@ public class AndroidInterface implements SystemInterface {
     private Context act;
     public static final String SPREF = "preferences";
 
+    private void initCookieHandler(){
+        CookieStore cookieStore = new PersistentCookieStore(act);
+        CookieManager cookieManager = new CookieManager(cookieStore, CookiePolicy.ACCEPT_ALL);
+        CookieHandler.setDefault(cookieManager);
+    }
+
     public AndroidInterface(Context act){
         this.act = act;
+        initCookieHandler();
     }
 
     @Override
